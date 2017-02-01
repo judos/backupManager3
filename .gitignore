@@ -1,0 +1,7 @@
+# JAVA files
+*.class
+
+bin/
+
+# build tool files
+.gradle
