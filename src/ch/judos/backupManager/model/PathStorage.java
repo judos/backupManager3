@@ -1,4 +1,4 @@
-package model;
+package ch.judos.backupManager.model;
 
 import java.io.File;
 import java.io.IOException;

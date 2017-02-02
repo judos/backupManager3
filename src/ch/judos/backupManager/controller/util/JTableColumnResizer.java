@@ -1,4 +1,4 @@
-package controller.util;
+package ch.judos.backupManager.controller.util;
 
 import java.awt.Component;
 

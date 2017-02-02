@@ -1,14 +1,14 @@
-package controller;
-import model.PathEntry;
-import model.PathStorage;
-import view.AddPathFrame;
-import view.MainFrame;
+package ch.judos.backupManager.controller;
+import ch.judos.backupManager.model.PathEntry;
+import ch.judos.backupManager.model.PathStorage;
+import ch.judos.backupManager.view.AddPathFrame;
+import ch.judos.backupManager.view.BackupOptionsFrame;
+import ch.judos.backupManager.view.MainFrame;
 
 public class MainFrameController {
 
 	private PathStorage storage;
 	private MainFrame frame;
-	private AddPathFrame addPathFrame;
 
 	public MainFrameController(MainFrame frame, PathStorage storage) {
 		this.storage = storage;
@@ -19,6 +19,15 @@ public class MainFrameController {
 	private void setupListeners() {
 		this.frame.addButton.addActionListener(event -> this.addDirectoryClicked());
 		this.frame.removeButton.addActionListener(event -> this.removeDirectories());
+		this.frame.startBackupButton.addActionListener(event -> this.startBackup());
+	}
+
+	private void startBackup() {
+		BackupOptionsFrame backupOptionsFrame = new BackupOptionsFrame(this.frame);
+		backupOptionsFrame.setCompletion(options -> {
+			backupOptionsFrame.dispose();
+		});
+		backupOptionsFrame.setVisible(true);
 	}
 
 	private void removeDirectories() {
@@ -31,13 +40,13 @@ public class MainFrameController {
 	}
 
 	private void addDirectoryClicked() {
-		this.addPathFrame = new AddPathFrame(this.frame);
-		this.addPathFrame.setAddPathListener((changePath, backupPath) -> {
+		AddPathFrame addPathFrame = new AddPathFrame(this.frame);
+		addPathFrame.setAddPathListener((changePath, backupPath) -> {
 			PathEntry entry = new PathEntry(changePath, backupPath, "-", false);
 			this.storage.addPath(entry);
 			this.frame.table.updateUI();
 		});
-		this.addPathFrame.setVisible(true);
+		addPathFrame.setVisible(true);
 	}
 
 }

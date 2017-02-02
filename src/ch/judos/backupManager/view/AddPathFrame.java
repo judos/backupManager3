@@ -1,4 +1,4 @@
-package view;
+package ch.judos.backupManager.view;
 
 import java.awt.*;
 import java.io.File;
@@ -6,8 +6,8 @@ import java.util.function.BiConsumer;
 
 import javax.swing.*;
 
+import ch.judos.backupManager.model.Text;
 import ch.judos.generic.files.FileUtils;
-import model.Text;
 
 public class AddPathFrame extends JDialog {
 
@@ -104,10 +104,9 @@ public class AddPathFrame extends JDialog {
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new FlowLayout());
 		buttons.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		this.addButton = new JButton(Text.get("add"), new ImageIcon("ok icon-40.png"));
+		this.addButton = new JButton(Text.get("add"), Icons.add());
 		buttons.add(this.addButton);
-		this.cancelButton = new JButton(Text.get("cancel"), new ImageIcon(
-			"cancel icon-40.png"));
+		this.cancelButton = new JButton(Text.get("cancel"), Icons.cancel());
 		buttons.add(this.cancelButton);
 		add(buttons, c);
 	}

@@ -1,11 +1,13 @@
+package ch.judos.backupManager;
 import java.io.File;
 import java.io.IOException;
 
-import controller.MainFrameController;
-import model.PathStorage;
-import view.MainFrame;
+import ch.judos.backupManager.controller.MainFrameController;
+import ch.judos.backupManager.model.PathStorage;
+import ch.judos.backupManager.view.MainFrame;
 
 public class Launcher {
+	public static final String VERSION = "3.0";
 	private PathStorage storage;
 	private MainFrameController controller;
 	private static final File BACKUP_PATH_FILE = new File("backupPaths.csv");

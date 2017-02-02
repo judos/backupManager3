@@ -1,4 +1,4 @@
-package model;
+package ch.judos.backupManager.model;
 
 public class PathEntry {
 

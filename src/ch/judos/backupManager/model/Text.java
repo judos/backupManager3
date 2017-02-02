@@ -1,4 +1,4 @@
-package model;
+package ch.judos.backupManager.model;
 
 import java.util.Locale;
 import java.util.Locale.LanguageRange;
@@ -28,7 +28,7 @@ public class Text {
 			return sharedInstance.bundle.getString(string);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			System.err.println("Text key not found: " + string);
 			return string;
 		}
 	}

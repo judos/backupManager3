@@ -1,10 +1,10 @@
-package view.tableModel;
+package ch.judos.backupManager.view.tableModel;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import model.PathEntry;
-import model.PathStorage;
-import model.Text;
+import ch.judos.backupManager.model.PathEntry;
+import ch.judos.backupManager.model.PathStorage;
+import ch.judos.backupManager.model.Text;
 
 public class PathTableModel implements TableModel {
 

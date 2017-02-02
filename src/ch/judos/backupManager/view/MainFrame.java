@@ -1,17 +1,20 @@
-package view;
+package ch.judos.backupManager.view;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import controller.util.JTableColumnResizer;
-import model.PathStorage;
-import model.Text;
-import view.tableModel.PathTableModel;
+import ch.judos.backupManager.Launcher;
+import ch.judos.backupManager.controller.util.JTableColumnResizer;
+import ch.judos.backupManager.model.PathStorage;
+import ch.judos.backupManager.model.Text;
+import ch.judos.backupManager.view.tableModel.PathTableModel;
 
 public class MainFrame extends JFrame {
 
@@ -28,7 +31,8 @@ public class MainFrame extends JFrame {
 		this.storage = storage;
 		setLookAndFeel();
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		setTitle("BackupManager 3 - judos 2017");
+		setTitle("BackupManager " + Launcher.VERSION + " - judos 2017");
+		setIconImage(ImageIO.read(new File("backup icon-40.png")));
 		addComponents();
 
 		Dimension prefered = this.getPreferredSize();
@@ -68,18 +72,16 @@ public class MainFrame extends JFrame {
 		c.fill = GridBagConstraints.NONE;
 		c.gridwidth = 1;
 		c.anchor = GridBagConstraints.WEST;
-		this.addButton = new JButton(Text.get("add_path"), new ImageIcon("add icon-40.png"));
+		this.addButton = new JButton(Text.get("add_path"), Icons.add());
 		this.add(this.addButton, c);
 
 		c.gridx = 1;
-		this.removeButton = new JButton(Text.get("remove_path"), new ImageIcon(
-			"remove icon-40.png"));
+		this.removeButton = new JButton(Text.get("remove_path"), Icons.remove());
 		this.add(this.removeButton, c);
 
 		c.gridx = 3;
 		c.anchor = GridBagConstraints.EAST;
-		this.startBackupButton = new JButton(Text.get("start_backup"), new ImageIcon(
-			"backup icon-40.png"));
+		this.startBackupButton = new JButton(Text.get("start_backup"), Icons.backup());
 		this.add(this.startBackupButton, c);
 
 		c.gridx = 2;
