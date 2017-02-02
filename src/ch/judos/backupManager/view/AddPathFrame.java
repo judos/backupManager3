@@ -54,7 +54,6 @@ public class AddPathFrame extends JDialog {
 				&& backupPath.exists()) {
 				this.addPathCompletion.accept(changePath.getAbsolutePath(), backupPath
 					.getAbsolutePath());
-				this.dispose();
 			}
 		});
 	}
@@ -104,9 +103,9 @@ public class AddPathFrame extends JDialog {
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new FlowLayout());
 		buttons.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		this.addButton = new JButton(Text.get("add"), Icons.add());
+		this.addButton = new JButton(Text.get("add"), Images.add());
 		buttons.add(this.addButton);
-		this.cancelButton = new JButton(Text.get("cancel"), Icons.cancel());
+		this.cancelButton = new JButton(Text.get("cancel"), Images.cancel());
 		buttons.add(this.cancelButton);
 		add(buttons, c);
 	}

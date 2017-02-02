@@ -87,11 +87,11 @@ public class BackupOptionsFrame extends JDialog {
 		c.gridy = 6;
 		c.insets.left = 5;
 		c.gridwidth = 1;
-		this.startButton = new JButton(Text.get("start_backup"), Icons.backup());
+		this.startButton = new JButton(Text.get("start_backup"), Images.backup());
 		add(this.startButton, c);
 
 		c.gridx = 1;
-		this.cancelButton = new JButton(Text.get("cancel"), Icons.cancel());
+		this.cancelButton = new JButton(Text.get("cancel"), Images.cancel());
 		add(this.cancelButton, c);
 	}
 

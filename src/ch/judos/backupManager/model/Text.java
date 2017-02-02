@@ -10,16 +10,19 @@ public class Text {
 
 	private ResourceBundle bundle;
 	private static final Text sharedInstance = new Text();
+	private boolean output = false;
 
 	private Text() {
 		Locale currentLocale = Locale.getDefault();
-		System.out.println("Host locale: " + currentLocale);
+		if (output)
+			System.out.println("Host locale: " + currentLocale);
 		LanguageRange high = new LanguageRange(currentLocale.toLanguageTag());
 		LanguageRange low = new LanguageRange("en-US", LanguageRange.MIN_WEIGHT);
 		// Locale l1 = new Locale("en");
 		Locale l2 = new Locale("de");
 		Locale best = Locale.lookup(new DynamicList<>(high, low), new DynamicList<>(l2));
-		System.out.println("Best matching locale: " + best);
+		if (output)
+			System.out.println("Best matching locale: " + best);
 		this.bundle = ResourceBundle.getBundle("TextBundle", best);
 	}
 

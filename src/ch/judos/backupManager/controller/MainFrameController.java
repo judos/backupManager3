@@ -25,6 +25,8 @@ public class MainFrameController {
 	private void startBackup() {
 		BackupOptionsFrame backupOptionsFrame = new BackupOptionsFrame(this.frame);
 		backupOptionsFrame.setCompletion(options -> {
+			BackupController controller = new BackupController(this.frame, this.storage);
+			controller.startBackup(options);
 			backupOptionsFrame.dispose();
 		});
 		backupOptionsFrame.setVisible(true);
@@ -42,6 +44,7 @@ public class MainFrameController {
 	private void addDirectoryClicked() {
 		AddPathFrame addPathFrame = new AddPathFrame(this.frame);
 		addPathFrame.setAddPathListener((changePath, backupPath) -> {
+			addPathFrame.dispose();
 			PathEntry entry = new PathEntry(changePath, backupPath, "-", false);
 			this.storage.addPath(entry);
 			this.frame.table.updateUI();

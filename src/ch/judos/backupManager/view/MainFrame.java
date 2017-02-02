@@ -5,9 +5,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import ch.judos.backupManager.Launcher;
@@ -32,7 +30,7 @@ public class MainFrame extends JFrame {
 		setLookAndFeel();
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setTitle("BackupManager " + Launcher.VERSION + " - judos 2017");
-		setIconImage(ImageIO.read(new File("backup icon-40.png")));
+		setIconImage(Images.backupImage());
 		addComponents();
 
 		Dimension prefered = this.getPreferredSize();
@@ -72,16 +70,16 @@ public class MainFrame extends JFrame {
 		c.fill = GridBagConstraints.NONE;
 		c.gridwidth = 1;
 		c.anchor = GridBagConstraints.WEST;
-		this.addButton = new JButton(Text.get("add_path"), Icons.add());
+		this.addButton = new JButton(Text.get("add_path"), Images.add());
 		this.add(this.addButton, c);
 
 		c.gridx = 1;
-		this.removeButton = new JButton(Text.get("remove_path"), Icons.remove());
+		this.removeButton = new JButton(Text.get("remove_path"), Images.remove());
 		this.add(this.removeButton, c);
 
 		c.gridx = 3;
 		c.anchor = GridBagConstraints.EAST;
-		this.startBackupButton = new JButton(Text.get("start_backup"), Icons.backup());
+		this.startBackupButton = new JButton(Text.get("start_backup"), Images.backup());
 		this.add(this.startBackupButton, c);
 
 		c.gridx = 2;
