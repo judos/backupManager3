@@ -22,6 +22,10 @@ public class CopyOperation extends FileOperation {
 			this.dataToProcess += file.length();
 			return;
 		}
+		if (file.listFiles() == null) {
+			System.err.println("ERROR: " + file);
+			return;
+		}
 		for (File child : file.listFiles()) {
 			calculateWorkFor(child);
 		}

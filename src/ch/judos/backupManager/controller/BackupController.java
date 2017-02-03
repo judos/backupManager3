@@ -63,9 +63,14 @@ public class BackupController {
 		ArrayList<String> newPathsToCheck = new ArrayList<String>();
 		String[] filesChange = folderChange.list();
 		if (filesChange == null) {
-			System.out.println(folderChange);
+			System.err.println("ERROR: " + folderChange);
+			return newPathsToCheck;
 		}
 		String[] filesBackup = folderBackup.list();
+		if (filesBackup == null) {
+			System.err.println("ERROR: " + folderBackup);
+			return newPathsToCheck;
+		}
 		assert (filesChange != null);
 		assert (filesBackup != null);
 		HashSet<String> filesBackupSet = new HashSet<String>(Arrays.asList(filesBackup));

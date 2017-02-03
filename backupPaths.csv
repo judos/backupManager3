@@ -1,3 +1,4 @@
 changePath;backupPath;status;selected
 D:\Julian\eclipse workspace\BackupManager3\HD change;D:\Julian\eclipse workspace\BackupManager3\HD backup;-;false
-Y:\Filme;X:\Filme;-;true
+Y:\Filme;X:\Filme;-;false
+D:\;Y:\D;-;true
