@@ -1,4 +1,4 @@
-package ch.judos.backupManager.view.tableModel;
+package ch.judos.backupManager.view.table;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 

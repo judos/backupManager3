@@ -1,8 +1,5 @@
 package ch.judos.backupManager.view;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -12,7 +9,8 @@ import ch.judos.backupManager.Launcher;
 import ch.judos.backupManager.controller.util.JTableColumnResizer;
 import ch.judos.backupManager.model.PathStorage;
 import ch.judos.backupManager.model.Text;
-import ch.judos.backupManager.view.tableModel.PathTableModel;
+import ch.judos.backupManager.view.table.CustomTableCellRenderer;
+import ch.judos.backupManager.view.table.PathTableModel;
 
 public class MainFrame extends JFrame {
 
@@ -61,7 +59,11 @@ public class MainFrame extends JFrame {
 			ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		this.tableScrollPane.setVerticalScrollBarPolicy(
 			ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		this.table.setGridColor(Color.LIGHT_GRAY);
+		this.table.setSelectionBackground(new Color(230, 240, 255));
+		this.table.setSelectionForeground(Color.BLACK);
 		this.table.setFillsViewportHeight(true);
+		this.table.setDefaultRenderer(Object.class, new CustomTableCellRenderer());
 		resizeColumnWidths();
 
 		c.gridy = 1;
