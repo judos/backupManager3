@@ -21,6 +21,7 @@ public class BackupController {
 	private BackupProgressFrame backupFrame;
 	private BackupOptions options;
 	private TaskManager taskManager;
+	private Thread checkThread;
 
 	public BackupController(MainFrame frame, PathStorage storage) {
 		this.frame = frame;
@@ -30,9 +31,9 @@ public class BackupController {
 
 	public void startBackup(BackupOptions options) {
 		this.options = options;
-		this.backupFrame = new BackupProgressFrame(this.frame);
+		this.backupFrame = new BackupProgressFrame(this.frame, options);
 		this.backupFrame.setVisible(true);
-		checkAllEntries();
+		this.checkThread = new Thread(this::checkAllEntries, "Check Thread");
 		this.taskManager.print();
 	}
 

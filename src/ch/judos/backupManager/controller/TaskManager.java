@@ -14,7 +14,7 @@ public class TaskManager {
 	public TaskManager() {
 		this.taskList = new ConcurrentLinkedQueue<>();
 		this.elementsToProcess = 0;
-		this.dataToProcess = 0l;
+		this.dataToProcess = 0;
 	}
 
 	public void add(FileOperation operation) {

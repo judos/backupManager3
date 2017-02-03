@@ -25,9 +25,9 @@ public class MainFrameController {
 	private void startBackup() {
 		BackupOptionsFrame backupOptionsFrame = new BackupOptionsFrame(this.frame);
 		backupOptionsFrame.setCompletion(options -> {
+			backupOptionsFrame.dispose();
 			BackupController controller = new BackupController(this.frame, this.storage);
 			controller.startBackup(options);
-			backupOptionsFrame.dispose();
 		});
 		backupOptionsFrame.setVisible(true);
 	}

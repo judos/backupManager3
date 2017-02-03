@@ -40,8 +40,9 @@ public class AddPathFrame extends JDialog {
 	private void setupActions() {
 		this.cancelButton.addActionListener(event -> this.dispose());
 		this.browseChangePathButton.addActionListener(event -> {
-			File f = FileUtils.requestDir(this, Text.get("browse"));
-			this.changePathField.setText(f.getAbsolutePath());
+			File selectedFile = FileUtils.requestDir(this, Text.get("browse"));
+			if (selectedFile != null)
+				this.changePathField.setText(selectedFile.getAbsolutePath());
 		});
 		this.browseBackupPathButton.addActionListener(event -> {
 			File f = FileUtils.requestDir(this, Text.get("browse"));
