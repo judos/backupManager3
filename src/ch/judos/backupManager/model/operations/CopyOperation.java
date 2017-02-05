@@ -2,6 +2,8 @@ package ch.judos.backupManager.model.operations;
 
 import java.io.File;
 
+import ch.judos.generic.files.FileUtils;
+
 public class CopyOperation extends FileOperation {
 	private File source;
 	private File target;
@@ -33,6 +35,6 @@ public class CopyOperation extends FileOperation {
 	}
 
 	public void execute() {
-
+		FileUtils.copyDirectory(this.source, this.target);
 	}
 }
