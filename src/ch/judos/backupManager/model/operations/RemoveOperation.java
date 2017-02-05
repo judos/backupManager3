@@ -8,7 +8,8 @@ public class RemoveOperation extends FileOperation {
 
 	private File remove;
 
-	public RemoveOperation(File remove) {
+	public RemoveOperation(File remove, String relativePath) {
+		super(Tag.REMOVED, relativePath);
 		this.remove = remove;
 		calculateWork();
 	}
@@ -21,11 +22,6 @@ public class RemoveOperation extends FileOperation {
 	@Override
 	public void execute() {
 		FileUtils.deleteDirectory(this.remove);
-	}
-
-	@Override
-	public String getLogLine() {
-		return "DEL: " + this.remove;
 	}
 
 }

@@ -6,7 +6,8 @@ public class CopyOperation extends FileOperation {
 	private File source;
 	private File target;
 
-	public CopyOperation(File source, File target) {
+	public CopyOperation(File source, File target, Tag operationTag, String relativePath) {
+		super(operationTag, relativePath);
 		this.source = source;
 		this.target = target;
 		calculateWork();
@@ -34,9 +35,4 @@ public class CopyOperation extends FileOperation {
 	public void execute() {
 
 	}
-
-	public String getLogLine() {
-		return "COPY: " + this.source + " -> " + this.target;
-	}
-
 }

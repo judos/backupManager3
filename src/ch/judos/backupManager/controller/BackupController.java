@@ -9,6 +9,7 @@ import ch.judos.backupManager.model.BackupOptions;
 import ch.judos.backupManager.model.PathEntry;
 import ch.judos.backupManager.model.PathStorage;
 import ch.judos.backupManager.model.operations.CopyOperation;
+import ch.judos.backupManager.model.operations.FileOperation.Tag;
 import ch.judos.backupManager.model.operations.RemoveOperation;
 import ch.judos.backupManager.view.BackupProgressFrame;
 import ch.judos.backupManager.view.MainFrame;
@@ -34,7 +35,7 @@ public class BackupController {
 		this.backupFrame = new BackupProgressFrame(this.frame, options);
 		this.backupFrame.setVisible(true);
 		this.checkThread = new Thread(this::checkAllEntries, "Check Thread");
-		this.taskManager.print();
+		this.checkThread.start();
 	}
 
 	private void checkAllEntries() {
@@ -44,6 +45,7 @@ public class BackupController {
 				checkEntry(entry);
 			}
 		}
+		this.taskManager.print();
 	}
 
 	private void checkEntry(PathEntry entry) {
@@ -81,8 +83,10 @@ public class BackupController {
 			if (filesBackupSet.contains(file)) {
 				filesBackupSet.remove(file);
 				if (changedFile.isFile() != backupFile.isFile()) {
-					RemoveOperation remove = new RemoveOperation(backupFile);
-					CopyOperation copy = new CopyOperation(changedFile, backupFile);
+					RemoveOperation remove = new RemoveOperation(backupFile, basePath + "/"
+						+ file);
+					CopyOperation copy = new CopyOperation(changedFile, backupFile,
+						Tag.CHANGED, basePath + "/" + file);
 					copy.dependsOn = remove;
 					this.taskManager.add(remove);
 					this.taskManager.add(copy);
@@ -92,23 +96,26 @@ public class BackupController {
 					newPathsToCheck.add(subpath.getPath());
 				}
 				else if (changedFile.isFile()) {
-					compareFiles(changedFile, backupFile);
+					compareFiles(changedFile, backupFile, basePath + "/" + file);
 				}
 			}
 			else {
-				this.taskManager.add(new CopyOperation(changedFile, backupFile));
+				this.taskManager.add(new CopyOperation(changedFile, backupFile, Tag.NEW,
+					basePath + "/" + file));
 			}
 		}
 		for (String file : filesBackupSet) {
-			this.taskManager.add(new RemoveOperation(new File(folderBackup, file)));
+			this.taskManager.add(new RemoveOperation(new File(folderBackup, file), basePath
+				+ "/" + file));
 		}
 		return newPathsToCheck;
 	}
 
-	private void compareFiles(File changedFile, File backupFile) {
+	private void compareFiles(File changedFile, File backupFile, String relativePath) {
 		if (!fileWasModified(changedFile, backupFile))
 			return;
-		this.taskManager.add(new CopyOperation(changedFile, backupFile));
+		this.taskManager.add(new CopyOperation(changedFile, backupFile, Tag.CHANGED,
+			relativePath));
 	}
 
 	private boolean fileWasModified(File changedFile, File backupFile) {

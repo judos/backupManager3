@@ -5,13 +5,20 @@ public abstract class FileOperation {
 	public State currentState;
 	protected long dataToProcess;
 	protected int elementsToProcess;
+	private Tag tag;
+	private String relativePath;
 
 	public enum State {
 		TODO, IN_PROGRESS, DONE;
 	}
+	public enum Tag {
+		NEW, CHANGED, REMOVED;
+	}
 
-	public FileOperation() {
+	public FileOperation(Tag operationTag, String relativePath) {
 		this.currentState = State.TODO;
+		this.tag = operationTag;
+		this.relativePath = relativePath;
 	}
 
 	public FileOperation getDependsOn() {
@@ -19,7 +26,9 @@ public abstract class FileOperation {
 	}
 
 	public abstract void execute();
-	public abstract String getLogLine();
+	public String getLogLine() {
+		return this.tag.name() + ": " + this.relativePath;
+	}
 	public long getDataToProcess() {
 		return this.dataToProcess;
 	}
