@@ -38,9 +38,17 @@ public class Text {
 		return result;
 	}
 
-	public static String get(String string) {
+	public static String get(String string, Object... args) {
 		try {
-			return sharedInstance.bundle.getString(string);
+			String result = sharedInstance.bundle.getString(string);
+			if (args.length > 0) {
+				int index = 1;
+				for (Object arg : args) {
+					result = result.replaceAll("\\%" + index, arg.toString());
+					index++;
+				}
+			}
+			return result;
 		}
 		catch (Exception e) {
 			System.err.println("Text key not found: " + string);

@@ -8,6 +8,7 @@ import java.util.HashSet;
 import ch.judos.backupManager.model.BackupData;
 import ch.judos.backupManager.model.PathEntry;
 import ch.judos.backupManager.model.PathStorage;
+import ch.judos.backupManager.model.Text;
 import ch.judos.backupManager.model.operations.CopyOperation;
 import ch.judos.backupManager.model.operations.FileOperation.Tag;
 import ch.judos.backupManager.model.operations.RemoveOperation;
@@ -18,11 +19,13 @@ public class CheckFilesThread extends Thread {
 
 	private BackupData backupData;
 	private DynamicList<TupleR<PathEntry, String>> pathsToCheck;
+	private int checkedFolders;
 
 	public CheckFilesThread(PathStorage storage, BackupData backupData) {
 		this.backupData = backupData;
 		this.pathsToCheck = new DynamicList<TupleR<PathEntry, String>>();
 		addWorkFromStorage(storage);
+		this.checkedFolders = 0;
 	}
 
 	private void addWorkFromStorage(PathStorage storage) {
@@ -34,9 +37,19 @@ public class CheckFilesThread extends Thread {
 		}
 	}
 
+	public double getProgress() {
+		int total = this.checkedFolders + this.pathsToCheck.size();
+		return (double) this.checkedFolders / total;
+	}
+
+	public String getProgressText() {
+		int total = this.checkedFolders + this.pathsToCheck.size();
+		return Text.get("checking_folders", this.checkedFolders, total);
+	}
+
 	public void run() {
-		while (pathsToCheck.size() > 0) {
-			TupleR<PathEntry, String> checkEntry = pathsToCheck.remove(0);
+		while (this.pathsToCheck.size() > 0) {
+			TupleR<PathEntry, String> checkEntry = this.pathsToCheck.remove(0);
 			PathEntry basePaths = checkEntry.e0;
 			String currentRelativePath = checkEntry.e1;
 			File folderChange = new File(basePaths.getChangePath(), currentRelativePath);
@@ -44,8 +57,9 @@ public class CheckFilesThread extends Thread {
 			ArrayList<String> newRelativePathsToCheck = compareFolders(folderChange,
 				folderBackup, currentRelativePath);
 			for (String newRelativePathToCheck : newRelativePathsToCheck) {
-				pathsToCheck.add(new TupleR<>(basePaths, newRelativePathToCheck));
+				this.pathsToCheck.add(new TupleR<>(basePaths, newRelativePathToCheck));
 			}
+			this.checkedFolders++;
 		}
 		this.backupData.print();
 	}
@@ -63,8 +77,6 @@ public class CheckFilesThread extends Thread {
 			System.err.println("ERROR: " + folderBackup);
 			return newPathsToCheck;
 		}
-		assert (filesChange != null);
-		assert (filesBackup != null);
 		HashSet<String> filesBackupSet = new HashSet<String>(Arrays.asList(filesBackup));
 		for (String file : filesChange) {
 			File changedFile = new File(folderChange, file);

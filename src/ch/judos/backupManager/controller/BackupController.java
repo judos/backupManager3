@@ -1,5 +1,7 @@
 package ch.judos.backupManager.controller;
 
+import javax.swing.Timer;
+
 import ch.judos.backupManager.controller.backup.CheckFilesThread;
 import ch.judos.backupManager.model.BackupData;
 import ch.judos.backupManager.model.BackupOptions;
@@ -13,8 +15,9 @@ public class BackupController {
 	private MainFrame frame;
 	private BackupProgressFrame backupFrame;
 	private BackupOptions options;
-	private Thread checkThread;
+	private CheckFilesThread checkThread;
 	private BackupData backupData;
+	private Timer updateUiThread;
 
 	public BackupController(MainFrame frame, PathStorage storage) {
 		this.frame = frame;
@@ -29,6 +32,15 @@ public class BackupController {
 		this.backupFrame.setVisible(true);
 
 		this.checkThread.start();
+
+		this.updateUiThread = new Timer(500, event -> updateUI());
+		this.updateUiThread.start();
+	}
+
+	private void updateUI() {
+		this.backupFrame.progressBar.setMaximum(1000);
+		this.backupFrame.progressBar.setValue((int) (this.checkThread.getProgress() * 1000));
+		this.backupFrame.checkingFoldersLabel.setText(this.checkThread.getProgressText());
 	}
 
 }

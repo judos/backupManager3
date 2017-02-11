@@ -1,4 +1,4 @@
-show estimated progress of file checking
+
 thread for doing the backup
 
 
