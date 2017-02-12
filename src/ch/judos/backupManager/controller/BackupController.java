@@ -12,10 +12,12 @@ import ch.judos.backupManager.controller.backup.ProgressTrackable;
 import ch.judos.backupManager.model.BackupData;
 import ch.judos.backupManager.model.BackupOptions;
 import ch.judos.backupManager.model.PathStorage;
+import ch.judos.backupManager.model.Text;
 import ch.judos.backupManager.view.BackupProgressFrame;
 import ch.judos.backupManager.view.MainFrame;
 import ch.judos.generic.data.date.Date;
 import ch.judos.generic.files.FileUtils;
+import ch.judos.generic.gui.Notification;
 
 public class BackupController {
 
@@ -27,17 +29,20 @@ public class BackupController {
 	private BackupData data;
 	private Timer updateUiThread;
 	private BackupFilesThread backupThread;
+	private boolean finished;
 
 	public BackupController(MainFrame frame, PathStorage storage) {
 		this.frame = frame;
 		this.storage = storage;
 		this.data = new BackupData();
 		this.checkThread = new CheckFilesThread(this.storage, this.data);
+		this.finished = false;
 	}
 
 	public void startBackup(BackupOptions options) {
 		this.options = options;
 		this.backupFrame = new BackupProgressFrame(this.frame, options);
+		this.backupFrame.cancelButton.addActionListener(event -> promptCancelBackup());
 		this.backupFrame.setVisible(true);
 
 		this.checkThread.onFinished = this::startActualBackup;
@@ -45,6 +50,15 @@ public class BackupController {
 
 		this.updateUiThread = new Timer(300, event -> updateUI());
 		this.updateUiThread.start();
+	}
+
+	private void promptCancelBackup() {
+		String[] options = {Text.get("yes"), Text.get("no")};
+		int optionIndexYes = 0;
+		int selected = Notification.proceed(Text.get("cancel"), Text.get(
+			"question_cancel_backup"), options, optionIndexYes);
+		if (selected == optionIndexYes)
+			cancelBackup();
 	}
 
 	private void startActualBackup() {
@@ -58,11 +72,27 @@ public class BackupController {
 		this.backupThread.start();
 	}
 
-	private void finishBackup() {
+	private synchronized void cancelBackup() {
+		if (this.finished)
+			return;
+
+		this.updateUiThread.stop();
+		this.checkThread.shouldRun = false;
+		if (this.backupThread != null)
+			this.backupThread.shouldRun = false;
+		this.backupFrame.dispose();
+
+		this.finished = true;
+	}
+
+	private synchronized void finishBackup() {
+		if (this.finished)
+			return;
 		createAndOpenLogFile();
 
 		updateUI();
 		this.updateUiThread.stop();
+		this.finished = true;
 	}
 
 	private void createAndOpenLogFile() {

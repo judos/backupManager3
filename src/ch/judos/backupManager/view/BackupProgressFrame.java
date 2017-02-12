@@ -14,7 +14,7 @@ public class BackupProgressFrame extends JDialog {
 
 	private BackupOptions options;
 	public JProgressBar logProgressBar;
-	private JButton cancelButton;
+	public JButton cancelButton;
 	public JProgressBar backupProgressBar;
 	public JLabel logProgressLabel;
 	public JLabel backupProgressLabel;
@@ -23,10 +23,14 @@ public class BackupProgressFrame extends JDialog {
 	public BackupProgressFrame(MainFrame parent, BackupOptions options) {
 		super(parent);
 		this.options = options;
-		setTitle(Text.get("backup_running"));
+		if (this.options.onlyCreateLog)
+			setTitle(Text.get("log_running"));
+		else
+			setTitle(Text.get("backup_running"));
 		setupComponents();
 		pack();
 		setLocationRelativeTo(parent);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	}
 
 	private void setupComponents() {

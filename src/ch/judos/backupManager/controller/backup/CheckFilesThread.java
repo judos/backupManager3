@@ -21,12 +21,14 @@ public class CheckFilesThread extends Thread implements ProgressTrackable {
 	private DynamicList<TupleR<PathEntry, String>> pathsToCheck;
 	private int checkedFolders;
 	public Runnable onFinished;
+	public boolean shouldRun;
 
 	public CheckFilesThread(PathStorage storage, BackupData backupData) {
 		this.backupData = backupData;
 		this.pathsToCheck = new DynamicList<TupleR<PathEntry, String>>();
 		addWorkFromStorage(storage);
 		this.checkedFolders = 0;
+		this.shouldRun = true;
 	}
 
 	private void addWorkFromStorage(PathStorage storage) {
@@ -61,6 +63,8 @@ public class CheckFilesThread extends Thread implements ProgressTrackable {
 				this.pathsToCheck.add(new TupleR<>(basePaths, newRelativePathToCheck));
 			}
 			this.checkedFolders++;
+			if (!this.shouldRun)
+				return;
 		}
 		if (this.onFinished != null) {
 			this.onFinished.run();

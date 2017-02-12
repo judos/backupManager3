@@ -11,11 +11,13 @@ public class BackupFilesThread extends Thread implements ProgressTrackable {
 	public Runnable onFinished;
 	private int elementsProcessed;
 	private long bytesProcessed;
+	public boolean shouldRun;
 
 	public BackupFilesThread(BackupData data) {
 		this.data = data;
 		this.elementsProcessed = 0;
 		this.bytesProcessed = 0;
+		this.shouldRun = true;
 	}
 
 	@Override
@@ -39,6 +41,8 @@ public class BackupFilesThread extends Thread implements ProgressTrackable {
 		while (this.data.taskList.size() > 0) {
 			FileOperation operation = this.data.taskList.poll();
 			workOn(operation);
+			if (!this.shouldRun)
+				return;
 		}
 
 		if (this.onFinished != null)
