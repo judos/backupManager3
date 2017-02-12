@@ -42,10 +42,8 @@ public class Text {
 		try {
 			String result = sharedInstance.bundle.getString(string);
 			if (args.length > 0) {
-				int index = 1;
 				for (Object arg : args) {
-					result = result.replaceAll("\\%" + index, arg.toString());
-					index++;
+					result = result.replaceFirst("\\%", arg.toString());
 				}
 			}
 			return result;

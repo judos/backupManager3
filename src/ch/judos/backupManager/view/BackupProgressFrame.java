@@ -66,8 +66,9 @@ public class BackupProgressFrame extends JDialog {
 
 	private JProgressBar createProgressBar() {
 		JProgressBar result = new JProgressBar(SwingConstants.HORIZONTAL);
-		result.setMinimumSize(new Dimension(300, 40));
-		result.setPreferredSize(new Dimension(300, 40));
+		result.setMinimumSize(new Dimension(300, 35));
+		result.setPreferredSize(new Dimension(300, 35));
+		result.setStringPainted(true);
 		return result;
 	}
 

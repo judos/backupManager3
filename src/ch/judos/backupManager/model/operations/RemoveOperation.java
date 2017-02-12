@@ -24,4 +24,9 @@ public class RemoveOperation extends FileOperation {
 		FileUtils.deleteDirectory(this.remove);
 	}
 
+	@Override
+	public boolean isFile() {
+		return this.remove.isFile();
+	}
+
 }

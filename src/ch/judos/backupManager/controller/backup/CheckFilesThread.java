@@ -20,6 +20,7 @@ public class CheckFilesThread extends Thread {
 	private BackupData backupData;
 	private DynamicList<TupleR<PathEntry, String>> pathsToCheck;
 	private int checkedFolders;
+	public Runnable onFinished;
 
 	public CheckFilesThread(PathStorage storage, BackupData backupData) {
 		this.backupData = backupData;
@@ -61,7 +62,9 @@ public class CheckFilesThread extends Thread {
 			}
 			this.checkedFolders++;
 		}
-		this.backupData.print();
+		if (this.onFinished != null) {
+			this.onFinished.run();
+		}
 	}
 
 	private ArrayList<String> compareFolders(File folderChange, File folderBackup,

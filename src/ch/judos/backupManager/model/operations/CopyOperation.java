@@ -37,4 +37,9 @@ public class CopyOperation extends FileOperation {
 	public void execute() {
 		FileUtils.copyDirectory(this.source, this.target);
 	}
+
+	@Override
+	public boolean isFile() {
+		return this.source.isFile();
+	}
 }
