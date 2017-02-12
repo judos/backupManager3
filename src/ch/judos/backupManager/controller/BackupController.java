@@ -52,7 +52,10 @@ public class BackupController {
 	private void createAndOpenLogFile() {
 		try {
 			File logFile = null;
-			if (!this.options.saveLog && this.options.openLog) {
+			if (this.options.saveLog) {
+				logFile = new File(new Date().toString("Y-m-d") + " Backup Log.txt");
+			}
+			else if (this.options.openLog) {
 				logFile = File.createTempFile(new Date().toString() + " Backup Log - ",
 					".txt");
 			}
