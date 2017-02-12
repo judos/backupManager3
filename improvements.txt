@@ -1,6 +1,2 @@
-
-thread for doing the backup
-
-
 cancelling a backup
 closing progress frame counts as trying to cancel

@@ -15,7 +15,7 @@ import ch.judos.backupManager.model.operations.RemoveOperation;
 import ch.judos.generic.data.DynamicList;
 import ch.judos.generic.data.TupleR;
 
-public class CheckFilesThread extends Thread {
+public class CheckFilesThread extends Thread implements ProgressTrackable {
 
 	private BackupData backupData;
 	private DynamicList<TupleR<PathEntry, String>> pathsToCheck;

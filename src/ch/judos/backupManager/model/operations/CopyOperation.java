@@ -22,7 +22,7 @@ public class CopyOperation extends FileOperation {
 	private void calculateWorkFor(File file) {
 		this.elementsToProcess++;
 		if (file.isFile()) {
-			this.dataToProcess += file.length();
+			this.bytesToProcess += file.length();
 			return;
 		}
 		if (file.listFiles() == null) {

@@ -5,7 +5,7 @@ import ch.judos.backupManager.model.Text;
 public abstract class FileOperation {
 	public FileOperation dependsOn;
 	public State currentState;
-	protected long dataToProcess;
+	protected long bytesToProcess;
 	protected int elementsToProcess;
 	private Tag tag;
 	private String relativePath;
@@ -50,8 +50,8 @@ public abstract class FileOperation {
 		String prefix = isFile() ? Text.get("log_file") : Text.get("log_folder");
 		return prefix + this.tag + " " + this.relativePath;
 	}
-	public long getDataToProcess() {
-		return this.dataToProcess;
+	public long getBytesToProcess() {
+		return this.bytesToProcess;
 	}
 	public int getElementsToProcess() {
 		return this.elementsToProcess;

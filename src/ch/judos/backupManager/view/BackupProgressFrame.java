@@ -13,10 +13,11 @@ import ch.judos.backupManager.model.Text;
 public class BackupProgressFrame extends JDialog {
 
 	private BackupOptions options;
-	public JProgressBar progressBar;
+	public JProgressBar logProgressBar;
 	private JButton cancelButton;
-	private JProgressBar progressBar2;
-	public JLabel checkingFoldersLabel;
+	public JProgressBar backupProgressBar;
+	public JLabel logProgressLabel;
+	public JLabel backupProgressLabel;
 	private static final long serialVersionUID = -163978212692777202L;
 
 	public BackupProgressFrame(MainFrame parent, BackupOptions options) {
@@ -36,20 +37,21 @@ public class BackupProgressFrame extends JDialog {
 		c.insets = new Insets(5, 5, 5, 5);
 		c.weightx = 1;
 		c.gridy = 0;
-		this.checkingFoldersLabel = new JLabel(Text.get("checking_folders", 0, 0));
-		this.add(this.checkingFoldersLabel, c);
+		this.logProgressLabel = new JLabel(Text.get("checking_folders", 0, 0));
+		this.add(this.logProgressLabel, c);
 
 		c.gridy++;
-		this.progressBar = createProgressBar();
-		this.add(this.progressBar, c);
+		this.logProgressBar = createProgressBar();
+		this.add(this.logProgressBar, c);
 
 		if (!this.options.onlyCreateLog) {
 			c.gridy++;
-			this.add(new JLabel(Text.get("synchronizing_files")), c);
+			this.backupProgressLabel = new JLabel(Text.get("synchronizing_files"));
+			this.add(this.backupProgressLabel, c);
 
 			c.gridy++;
-			this.progressBar2 = createProgressBar();
-			this.add(this.progressBar2, c);
+			this.backupProgressBar = createProgressBar();
+			this.add(this.backupProgressBar, c);
 		}
 
 		c.gridy++;

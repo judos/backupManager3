@@ -15,7 +15,7 @@ public class RemoveOperation extends FileOperation {
 	}
 
 	private void calculateWork() {
-		this.dataToProcess = 0;
+		this.bytesToProcess = 0;
 		this.elementsToProcess = FileUtils.getFilesCount(this.remove, true);
 	}
 

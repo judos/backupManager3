@@ -2,9 +2,13 @@ package ch.judos.backupManager.controller;
 
 import java.io.File;
 
+import javax.swing.JLabel;
+import javax.swing.JProgressBar;
 import javax.swing.Timer;
 
+import ch.judos.backupManager.controller.backup.BackupFilesThread;
 import ch.judos.backupManager.controller.backup.CheckFilesThread;
+import ch.judos.backupManager.controller.backup.ProgressTrackable;
 import ch.judos.backupManager.model.BackupData;
 import ch.judos.backupManager.model.BackupOptions;
 import ch.judos.backupManager.model.PathStorage;
@@ -22,6 +26,7 @@ public class BackupController {
 	private CheckFilesThread checkThread;
 	private BackupData data;
 	private Timer updateUiThread;
+	private BackupFilesThread backupThread;
 
 	public BackupController(MainFrame frame, PathStorage storage) {
 		this.frame = frame;
@@ -35,11 +40,22 @@ public class BackupController {
 		this.backupFrame = new BackupProgressFrame(this.frame, options);
 		this.backupFrame.setVisible(true);
 
+		this.checkThread.onFinished = this::startActualBackup;
 		this.checkThread.start();
-		this.checkThread.onFinished = this::finishBackup;
 
 		this.updateUiThread = new Timer(300, event -> updateUI());
 		this.updateUiThread.start();
+	}
+
+	private void startActualBackup() {
+		if (this.options.onlyCreateLog) {
+			finishBackup();
+			return;
+		}
+
+		this.backupThread = new BackupFilesThread(this.data);
+		this.backupThread.onFinished = this::finishBackup;
+		this.backupThread.start();
 	}
 
 	private void finishBackup() {
@@ -72,9 +88,19 @@ public class BackupController {
 	}
 
 	private void updateUI() {
-		this.backupFrame.progressBar.setMaximum(1000);
-		this.backupFrame.progressBar.setValue((int) (this.checkThread.getProgress() * 1000));
-		this.backupFrame.checkingFoldersLabel.setText(this.checkThread.getProgressText());
+		setProgress(this.backupFrame.logProgressBar, this.backupFrame.logProgressLabel,
+			this.checkThread);
+		setProgress(this.backupFrame.backupProgressBar, this.backupFrame.backupProgressLabel,
+			this.backupThread);
+	}
+
+	private void setProgress(JProgressBar progressBar, JLabel progressLabel,
+		ProgressTrackable progress) {
+		if (progress == null)
+			return;
+		progressBar.setMaximum(1000);
+		progressBar.setValue((int) (progress.getProgress() * 1000));
+		progressLabel.setText(progress.getProgressText());
 	}
 
 }
