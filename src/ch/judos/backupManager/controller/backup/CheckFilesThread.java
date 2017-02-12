@@ -29,6 +29,7 @@ public class CheckFilesThread extends Thread implements ProgressTrackable {
 		addWorkFromStorage(storage);
 		this.checkedFolders = 0;
 		this.shouldRun = true;
+		setName("CheckFilesThread");
 	}
 
 	private void addWorkFromStorage(PathStorage storage) {

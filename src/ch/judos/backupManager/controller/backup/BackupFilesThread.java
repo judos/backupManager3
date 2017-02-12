@@ -18,6 +18,7 @@ public class BackupFilesThread extends Thread implements ProgressTrackable {
 		this.elementsProcessed = 0;
 		this.bytesProcessed = 0;
 		this.shouldRun = true;
+		setName("BackupThread");
 	}
 
 	@Override
