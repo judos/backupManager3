@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
@@ -76,6 +77,15 @@ public class BackupProgressFrame extends JDialog {
 		result.setPreferredSize(new Dimension(300, 35));
 		result.setStringPainted(true);
 		return result;
+	}
+
+	public void setButtonToFinished() {
+		for (ActionListener l : this.cancelButton.getActionListeners()) {
+			this.cancelButton.removeActionListener(l);
+		}
+		this.cancelButton.setText(Text.get("close_finished_dialog"));
+		this.cancelButton.setIcon(Images.done());
+		this.cancelButton.addActionListener(event -> this.dispose());
 	}
 
 }

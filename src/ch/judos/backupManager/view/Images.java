@@ -10,6 +10,10 @@ import javax.swing.ImageIcon;
 public class Images {
 
 	public static Icon add() {
+		return new ImageIcon("AppData/add icon-40.png");
+	}
+
+	public static Icon done() {
 		return new ImageIcon("AppData/ok icon-40.png");
 	}
 

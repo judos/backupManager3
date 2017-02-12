@@ -90,9 +90,9 @@ public class BackupController {
 			return;
 		createAndOpenLogFile();
 
-		updateUI();
 		this.updateUiThread.stop();
 		this.finished = true;
+		updateUI();
 	}
 
 	private void createAndOpenLogFile() {
@@ -122,6 +122,13 @@ public class BackupController {
 			this.checkThread);
 		setProgress(this.backupFrame.backupProgressBar, this.backupFrame.backupProgressLabel,
 			this.backupThread);
+		if (this.finished) {
+			if (this.options.onlyCreateLog)
+				this.backupFrame.setTitle(Text.get("log_finished"));
+			else
+				this.backupFrame.setTitle(Text.get("backup_finished"));
+			this.backupFrame.setButtonToFinished();
+		}
 	}
 
 	private void setProgress(JProgressBar progressBar, JLabel progressLabel,
