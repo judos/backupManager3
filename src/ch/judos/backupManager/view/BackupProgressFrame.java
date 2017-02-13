@@ -22,6 +22,7 @@ public class BackupProgressFrame extends JDialog {
 	public JLabel logProgressLabel;
 	public JLabel backupProgressLabel;
 	public Runnable onCancel;
+	public JLabel currentOperationLabel;
 	private static final long serialVersionUID = -163978212692777202L;
 
 	public BackupProgressFrame(MainFrame parent, BackupOptions options) {
@@ -69,12 +70,16 @@ public class BackupProgressFrame extends JDialog {
 
 		if (!this.options.onlyCreateLog) {
 			c.gridy++;
-			this.backupProgressLabel = new JLabel(Text.get("synchronizing_files"));
+			this.backupProgressLabel = new JLabel(Text.get("synchronizing_files", ""));
 			this.add(this.backupProgressLabel, c);
 
 			c.gridy++;
 			this.backupProgressBar = createProgressBar();
 			this.add(this.backupProgressBar, c);
+
+			c.gridy++;
+			this.currentOperationLabel = new JLabel("");
+			this.add(this.currentOperationLabel, c);
 		}
 
 		c.gridy++;

@@ -12,12 +12,14 @@ public class BackupFilesThread extends Thread implements ProgressTrackable {
 	private int elementsProcessed;
 	private long bytesProcessed;
 	public boolean shouldRun;
+	private FileOperation currentOperation;
 
 	public BackupFilesThread(BackupData data) {
 		this.data = data;
 		this.elementsProcessed = 0;
 		this.bytesProcessed = 0;
 		this.shouldRun = true;
+		this.currentOperation = null;
 		setName("BackupThread");
 	}
 
@@ -51,7 +53,7 @@ public class BackupFilesThread extends Thread implements ProgressTrackable {
 	}
 
 	private void workOn(FileOperation operation) {
-		System.out.println(operation.getLogLine());
+		this.currentOperation = operation;
 		try {
 			Thread.sleep(1000);
 		}
@@ -61,6 +63,12 @@ public class BackupFilesThread extends Thread implements ProgressTrackable {
 		this.elementsProcessed += operation.getElementsToProcess();
 		this.bytesProcessed += operation.getBytesToProcess();
 		operation.currentState = FileOperation.State.DONE;
+	}
+
+	public String getCurrentOperationText() {
+		if (this.currentOperation == null)
+			return "";
+		return this.currentOperation.getLogLine();
 	}
 
 }

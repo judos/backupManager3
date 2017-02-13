@@ -122,6 +122,8 @@ public class BackupController {
 			this.checkThread);
 		setProgress(this.backupFrame.backupProgressBar, this.backupFrame.backupProgressLabel,
 			this.backupThread);
+		this.backupFrame.currentOperationLabel.setText(this.backupThread
+			.getCurrentOperationText());
 		if (this.finished) {
 			if (this.options.onlyCreateLog)
 				this.backupFrame.setTitle(Text.get("log_finished"));
