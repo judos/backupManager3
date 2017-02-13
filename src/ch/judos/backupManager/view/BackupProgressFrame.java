@@ -5,6 +5,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.*;
 
@@ -15,10 +17,11 @@ public class BackupProgressFrame extends JDialog {
 
 	private BackupOptions options;
 	public JProgressBar logProgressBar;
-	public JButton cancelButton;
+	private JButton cancelButton;
 	public JProgressBar backupProgressBar;
 	public JLabel logProgressLabel;
 	public JLabel backupProgressLabel;
+	public Runnable onCancel;
 	private static final long serialVersionUID = -163978212692777202L;
 
 	public BackupProgressFrame(MainFrame parent, BackupOptions options) {
@@ -32,6 +35,21 @@ public class BackupProgressFrame extends JDialog {
 		pack();
 		setLocationRelativeTo(parent);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		addActionListeners();
+	}
+
+	private void addActionListeners() {
+		this.cancelButton.addActionListener(event -> {
+			if (this.onCancel != null)
+				this.onCancel.run();
+		});
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				if (onCancel != null)
+					onCancel.run();
+			}
+		});
 	}
 
 	private void setupComponents() {

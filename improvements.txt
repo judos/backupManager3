@@ -1,5 +1,3 @@
-closing progress frame counts as trying to cancel
-
 showing change/backup-folders in log file
 
 log errors while checking files / copying files

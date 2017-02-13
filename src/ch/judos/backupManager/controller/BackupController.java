@@ -42,7 +42,7 @@ public class BackupController {
 	public void startBackup(BackupOptions options) {
 		this.options = options;
 		this.backupFrame = new BackupProgressFrame(this.frame, options);
-		this.backupFrame.cancelButton.addActionListener(event -> promptCancelBackup());
+		this.backupFrame.onCancel = this::promptCancelBackup;
 		this.backupFrame.setVisible(true);
 
 		this.checkThread.onFinished = this::startActualBackup;
