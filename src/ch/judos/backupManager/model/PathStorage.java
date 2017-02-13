@@ -3,12 +3,13 @@ package ch.judos.backupManager.model;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import ch.judos.generic.data.DynamicList;
 import ch.judos.generic.data.csv.CSVFileReader;
 import ch.judos.generic.data.csv.CSVFileWriter;
 
-public class PathStorage {
+public class PathStorage implements Iterable<PathEntry> {
 
 	private DynamicList<PathEntry> list;
 
@@ -30,9 +31,8 @@ public class PathStorage {
 			this.list = new DynamicList<PathEntry>();
 			for (int i = 0; i < reader.countEntries(); i++) {
 				HashMap<String, String> entry = reader.getEntry(i);
-				this.list.add(new PathEntry(entry.get("changePath"), entry.get(
-					"backupPath"), entry.get("status"), Boolean.valueOf(entry.get(
-						"selected"))));
+				this.list.add(new PathEntry(entry.get("changePath"), entry.get("backupPath"),
+					entry.get("status"), Boolean.valueOf(entry.get("selected"))));
 			}
 		}
 		catch (IOException e) {
@@ -43,8 +43,8 @@ public class PathStorage {
 		String[] attributes = {"changePath", "backupPath", "status", "selected"};
 		CSVFileWriter writer = new CSVFileWriter(attributes);
 		for (PathEntry entry : this.list) {
-			writer.addEntry(new String[]{entry.getChangePath(), entry
-				.getBackupPath(), entry.getStatus(), String.valueOf(entry.isSelected())});
+			writer.addEntry(new String[]{entry.getChangePath(), entry.getBackupPath(), entry
+				.getStatus(), String.valueOf(entry.isSelected())});
 		}
 		writer.writeFile(backupPathFile);
 	}
@@ -57,6 +57,20 @@ public class PathStorage {
 
 	public void addPath(PathEntry entry) {
 		this.list.add(entry);
+	}
+
+	@Override
+	public Iterator<PathEntry> iterator() {
+		return this.list.iterator();
+	}
+
+	public PathStorage cloneSelected() {
+		PathStorage result = new PathStorage();
+		for (PathEntry entry : this) {
+			if (entry.isSelected())
+				result.addPath(entry);
+		}
+		return result;
 	}
 
 }

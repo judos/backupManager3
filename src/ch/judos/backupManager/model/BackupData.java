@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import ch.judos.backupManager.model.operations.FileOperation;
 import ch.judos.generic.data.DynamicList;
+import ch.judos.generic.data.StringUtils;
 import ch.judos.generic.data.date.DateTime;
 import ch.judos.generic.data.date.Time;
 import ch.judos.generic.files.FileSize;
@@ -61,6 +62,20 @@ public class BackupData {
 			Time duration = new Time((int) this.backupStarted.getDiffTo(backupFinished,
 				TimeUnit.SECONDS));
 			writer.write(Text.get("log_duration") + ": " + duration.toString());
+			writer.newLine();
+			writer.newLine();
+			writer.write(Text.get("backup_paths") + ":");
+			writer.newLine();
+			int length = 0;
+			for (PathEntry entry : options.pathsForBackup) {
+				length = Math.max(length, entry.getChangePath().length());
+			}
+			for (PathEntry entry : options.pathsForBackup) {
+				String changePath = StringUtils.extendRightWith(entry.getChangePath(), length,
+					" ");
+				writer.write(" " + changePath + " -> " + entry.getBackupPath());
+				writer.newLine();
+			}
 			writer.newLine();
 			writer.newLine();
 			writer.write(Text.get("log_synchronized") + ":");
