@@ -16,6 +16,7 @@ import ch.judos.backupManager.model.Text;
 import ch.judos.backupManager.view.BackupProgressFrame;
 import ch.judos.backupManager.view.MainFrame;
 import ch.judos.generic.data.date.Date;
+import ch.judos.generic.data.date.Time;
 import ch.judos.generic.files.FileUtils;
 import ch.judos.generic.gui.Notification;
 
@@ -99,7 +100,8 @@ public class BackupController {
 		try {
 			File logFile = null;
 			if (this.options.saveLog) {
-				logFile = new File(new Date().toString("Y-m-d") + " Backup Log.txt");
+				logFile = new File(new Date().toString("Y-m-d") + " " + new Time().toString(
+					" H/hi") + " Backup Log.txt");
 			}
 			else if (this.options.openLog) {
 				logFile = File.createTempFile(new Date().toString() + " Backup Log - ",
@@ -122,8 +124,10 @@ public class BackupController {
 			this.checkThread);
 		setProgress(this.backupFrame.backupProgressBar, this.backupFrame.backupProgressLabel,
 			this.backupThread);
-		this.backupFrame.currentOperationLabel.setText(this.backupThread
-			.getCurrentOperationText());
+		if (this.backupThread != null) {
+			this.backupFrame.currentOperationLabel.setText(this.backupThread
+				.getCurrentOperationText());
+		}
 		if (this.finished) {
 			if (this.options.onlyCreateLog)
 				this.backupFrame.setTitle(Text.get("log_finished"));
