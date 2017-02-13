@@ -1,4 +1,6 @@
 package ch.judos.backupManager.view.table;
+import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
@@ -8,10 +10,13 @@ import ch.judos.backupManager.model.Text;
 
 public class PathTableModel implements TableModel {
 
+	private static final long serialVersionUID = 6698625603526785005L;
 	private PathStorage storage;
+	private JTable table;
 
-	public PathTableModel(PathStorage storage) {
+	public PathTableModel(PathStorage storage, JTable table) {
 		this.storage = storage;
+		this.table = table;
 	}
 
 	@Override
@@ -73,6 +78,7 @@ public class PathTableModel implements TableModel {
 		if (columnIndex == 3) {
 			PathEntry entry = this.storage.getPathEntry(rowIndex);
 			entry.setSelected((boolean) aValue);
+			SwingUtilities.invokeLater(this.table::updateUI);
 		}
 	}
 

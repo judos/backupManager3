@@ -9,6 +9,7 @@ import ch.judos.backupManager.Launcher;
 import ch.judos.backupManager.controller.util.JTableColumnResizer;
 import ch.judos.backupManager.model.PathStorage;
 import ch.judos.backupManager.model.Text;
+import ch.judos.backupManager.view.table.CustomBooleanTableCellRenderer;
 import ch.judos.backupManager.view.table.CustomTableCellRenderer;
 import ch.judos.backupManager.view.table.PathTableModel;
 
@@ -49,8 +50,9 @@ public class MainFrame extends JFrame {
 		c.gridy = 0;
 		c.insets = new Insets(5, 5, 5, 5);
 		c.fill = GridBagConstraints.BOTH;
-		this.tableModel = new PathTableModel(this.storage);
-		this.table = new JTable(this.tableModel);
+		this.table = new JTable();
+		this.tableModel = new PathTableModel(this.storage, this.table);
+		this.table.setModel(this.tableModel);
 		this.tableScrollPane = new JScrollPane();
 		this.tableScrollPane.setViewportView(table);
 		this.add(this.tableScrollPane, c);
@@ -63,7 +65,13 @@ public class MainFrame extends JFrame {
 		this.table.setSelectionBackground(new Color(230, 240, 255));
 		this.table.setSelectionForeground(Color.BLACK);
 		this.table.setFillsViewportHeight(true);
-		this.table.setDefaultRenderer(Object.class, new CustomTableCellRenderer());
+		this.table.setDefaultRenderer(Object.class, new CustomTableCellRenderer(this.storage));
+		this.table.setDefaultRenderer(Boolean.class, new CustomBooleanTableCellRenderer(
+			this.storage));
+		this.table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		// this.table.setRowSelectionAllowed(true);
+		// this.table.setColumnSelectionAllowed(false);
+
 		resizeColumnWidths();
 
 		c.gridy = 1;
