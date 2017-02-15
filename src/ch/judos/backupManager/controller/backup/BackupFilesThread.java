@@ -55,11 +55,11 @@ public class BackupFilesThread extends Thread implements ProgressTrackable {
 	private void workOn(FileOperation operation) {
 		this.currentOperation = operation;
 		try {
-			Thread.sleep(1000);
+			operation.execute();
 		}
-		catch (InterruptedException e) {
+		catch (Exception e) {
+			e.printStackTrace();
 		}
-		operation.execute();
 		this.elementsProcessed += operation.getElementsToProcess();
 		this.bytesProcessed += operation.getBytesToProcess();
 		operation.currentState = FileOperation.State.DONE;

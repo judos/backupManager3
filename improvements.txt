@@ -1,5 +1,4 @@
 log errors while checking files / copying files
 check problems with files which could not get copied
-show progress in taskbar
 
 bundle release as jar and publish

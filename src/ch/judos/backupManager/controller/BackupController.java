@@ -15,6 +15,8 @@ import ch.judos.backupManager.model.PathEntry;
 import ch.judos.backupManager.model.Text;
 import ch.judos.backupManager.view.BackupProgressFrame;
 import ch.judos.backupManager.view.MainFrame;
+import ch.judos.backupManager.view.TaskBarProgressWrapper;
+import ch.judos.backupManager.view.TaskBarProgressWrapper.State;
 import ch.judos.generic.data.date.Date;
 import ch.judos.generic.data.date.Time;
 import ch.judos.generic.files.FileUtils;
@@ -31,6 +33,7 @@ public class BackupController {
 	private BackupFilesThread backupThread;
 	private boolean finished;
 	private Runnable completion;
+	private TaskBarProgressWrapper progressTaskBar;
 
 	public BackupController(MainFrame frame, BackupOptions options) {
 		this.frame = frame;
@@ -41,13 +44,15 @@ public class BackupController {
 	}
 
 	public void startBackup() {
-
 		this.backupFrame = new BackupProgressFrame(this.frame, options);
 		this.backupFrame.onCancel = this::promptCancelBackup;
 		this.backupFrame.setVisible(true);
 
 		this.checkThread.onFinished = this::startActualBackup;
 		this.checkThread.start();
+
+		this.progressTaskBar = new TaskBarProgressWrapper(this.frame);
+		progressTaskBar.setState(State.NORMAL);
 
 		this.updateUiThread = new Timer(300, event -> updateUI());
 		this.updateUiThread.start();
@@ -83,6 +88,7 @@ public class BackupController {
 			this.backupThread.shouldRun = false;
 		this.backupFrame.dispose();
 
+		this.progressTaskBar.setState(State.NO_PROGRESS);
 		this.finished = true;
 	}
 
@@ -93,6 +99,7 @@ public class BackupController {
 			updatePathEntryDates();
 		createAndOpenLogFile();
 
+		this.progressTaskBar.setState(State.NO_PROGRESS);
 		this.updateUiThread.stop();
 		this.finished = true;
 		updateUI();
@@ -132,6 +139,7 @@ public class BackupController {
 			this.checkThread);
 		setProgress(this.backupFrame.backupProgressBar, this.backupFrame.backupProgressLabel,
 			this.backupThread);
+		setTaskbarProgress();
 		if (this.backupThread != null) {
 			this.backupFrame.currentOperationLabel.setText(this.backupThread
 				.getCurrentOperationText());
@@ -143,6 +151,21 @@ public class BackupController {
 				this.backupFrame.setTitle(Text.get("backup_finished"));
 			this.backupFrame.setButtonToFinished(this.completion);
 		}
+	}
+
+	private void setTaskbarProgress() {
+		double progress = this.checkThread.getProgress();
+		if (!this.options.onlyCreateLog) {
+			if (this.backupThread != null) {
+				progress = (progress + 3 * this.backupThread.getProgress()) / 4;
+			}
+			else {
+				progress /= 4;
+			}
+		}
+		this.progressTaskBar.setState(State.NORMAL);
+		this.progressTaskBar.setProgress(progress);
+
 	}
 
 	private void setProgress(JProgressBar progressBar, JLabel progressLabel,
