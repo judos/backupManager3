@@ -23,6 +23,7 @@ public class BackupProgressFrame extends JDialog {
 	public JLabel backupProgressLabel;
 	public Runnable onCancel;
 	public JLabel currentOperationLabel;
+	public Runnable onFinish;
 	private static final long serialVersionUID = -163978212692777202L;
 
 	public BackupProgressFrame(MainFrame parent, BackupOptions options) {
@@ -102,13 +103,16 @@ public class BackupProgressFrame extends JDialog {
 		return result;
 	}
 
-	public void setButtonToFinished() {
+	public void setButtonToFinished(Runnable completion) {
 		for (ActionListener l : this.cancelButton.getActionListeners()) {
 			this.cancelButton.removeActionListener(l);
 		}
 		this.cancelButton.setText(Text.get("close_finished_dialog"));
 		this.cancelButton.setIcon(Images.done());
-		this.cancelButton.addActionListener(event -> this.dispose());
+		this.cancelButton.addActionListener(event -> {
+			this.dispose();
+			completion.run();
+		});
 	}
 
 }

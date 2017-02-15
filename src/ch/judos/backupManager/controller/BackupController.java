@@ -11,6 +11,7 @@ import ch.judos.backupManager.controller.backup.CheckFilesThread;
 import ch.judos.backupManager.controller.backup.ProgressTrackable;
 import ch.judos.backupManager.model.BackupData;
 import ch.judos.backupManager.model.BackupOptions;
+import ch.judos.backupManager.model.PathEntry;
 import ch.judos.backupManager.model.Text;
 import ch.judos.backupManager.view.BackupProgressFrame;
 import ch.judos.backupManager.view.MainFrame;
@@ -29,6 +30,7 @@ public class BackupController {
 	private Timer updateUiThread;
 	private BackupFilesThread backupThread;
 	private boolean finished;
+	private Runnable completion;
 
 	public BackupController(MainFrame frame, BackupOptions options) {
 		this.frame = frame;
@@ -87,11 +89,19 @@ public class BackupController {
 	private synchronized void finishBackup() {
 		if (this.finished)
 			return;
+		if (!this.options.onlyCreateLog)
+			updatePathEntryDates();
 		createAndOpenLogFile();
 
 		this.updateUiThread.stop();
 		this.finished = true;
 		updateUI();
+	}
+
+	private void updatePathEntryDates() {
+		for (PathEntry entry : this.options.pathsForBackup) {
+			entry.setLastBackup(new Date().toString("d.m.Y"));
+		}
 	}
 
 	private void createAndOpenLogFile() {
@@ -131,7 +141,7 @@ public class BackupController {
 				this.backupFrame.setTitle(Text.get("log_finished"));
 			else
 				this.backupFrame.setTitle(Text.get("backup_finished"));
-			this.backupFrame.setButtonToFinished();
+			this.backupFrame.setButtonToFinished(this.completion);
 		}
 	}
 
@@ -142,6 +152,10 @@ public class BackupController {
 		progressBar.setMaximum(1000);
 		progressBar.setValue((int) (progress.getProgress() * 1000));
 		progressLabel.setText(progress.getProgressText());
+	}
+
+	public void setCompletion(Runnable completion) {
+		this.completion = completion;
 	}
 
 }

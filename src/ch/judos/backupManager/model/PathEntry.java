@@ -4,14 +4,13 @@ public class PathEntry {
 
 	private String changePath;
 	private String backupPath;
-	private String status;
+	private String lastBackup;
 	private boolean selected;
 
-	public PathEntry(String changePath, String backupPath, String status,
-		boolean selected) {
+	public PathEntry(String changePath, String backupPath, String lastBackup, boolean selected) {
 		this.changePath = changePath;
 		this.backupPath = backupPath;
-		this.status = status;
+		this.lastBackup = lastBackup;
 		this.selected = selected;
 	}
 
@@ -23,14 +22,14 @@ public class PathEntry {
 		return this.backupPath;
 	}
 
-	public String getStatus() {
-		return this.status;
+	public String getLastBackup() {
+		return this.lastBackup;
 	}
 
 	@Override
 	public String toString() {
 		return "DirectoryEntry (" + this.changePath + " / " + this.backupPath + " / "
-			+ this.status + ")";
+			+ this.lastBackup + ")";
 	}
 
 	public void setSelected(boolean selected) {
@@ -39,5 +38,9 @@ public class PathEntry {
 
 	public boolean isSelected() {
 		return this.selected;
+	}
+
+	public void setLastBackup(String string) {
+		this.lastBackup = string;
 	}
 }

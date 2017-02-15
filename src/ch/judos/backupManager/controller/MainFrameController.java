@@ -28,6 +28,9 @@ public class MainFrameController {
 			backupOptionsFrame.dispose();
 			options.pathsForBackup = this.storage.cloneSelected();
 			BackupController controller = new BackupController(this.frame, options);
+			controller.setCompletion(() -> {
+				this.frame.table.updateUI();
+			});
 			controller.startBackup();
 		});
 		backupOptionsFrame.setVisible(true);

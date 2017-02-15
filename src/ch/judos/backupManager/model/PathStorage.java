@@ -44,7 +44,7 @@ public class PathStorage implements Iterable<PathEntry> {
 		CSVFileWriter writer = new CSVFileWriter(attributes);
 		for (PathEntry entry : this.list) {
 			writer.addEntry(new String[]{entry.getChangePath(), entry.getBackupPath(), entry
-				.getStatus(), String.valueOf(entry.isSelected())});
+				.getLastBackup(), String.valueOf(entry.isSelected())});
 		}
 		writer.writeFile(backupPathFile);
 	}

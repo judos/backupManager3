@@ -65,7 +65,7 @@ public class PathTableModel implements TableModel {
 			return entry.getBackupPath();
 		}
 		if (columnIndex == 2) {
-			return entry.getStatus();
+			return entry.getLastBackup();
 		}
 		if (columnIndex == 3) {
 			return entry.isSelected();
