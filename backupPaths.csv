@@ -1,8 +1,8 @@
 changePath;backupPath;status;selected
 D:\Julian\eclipse workspace\BackupManager3\HD change;D:\Julian\eclipse workspace\BackupManager3\HD backup;-;false
-Y:\Filme;X:\Filme;-;false
-D:\;Y:\D;-;true
+Y:\Filme;X:\Filme;15.02.2017;true
+D:\;Y:\D;15.02.2017;true
 Y:\Games;X:\Games;15.02.2017;false
 Y:\Ebooks;X:\Ebooks;15.02.2017;false
-Y:\Computer Science;X:\Computer Science;-;false
-Y:\Archived Files;X:\Archived Files;-;false
+Y:\Computer Science;X:\Computer Science;15.02.2017;true
+Y:\Archived Files;X:\Archived Files;15.02.2017;true
