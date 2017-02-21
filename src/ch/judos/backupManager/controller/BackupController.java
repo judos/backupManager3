@@ -17,6 +17,7 @@ import ch.judos.backupManager.view.BackupProgressFrame;
 import ch.judos.backupManager.view.MainFrame;
 import ch.judos.backupManager.view.TaskBarProgressWrapper;
 import ch.judos.backupManager.view.TaskBarProgressWrapper.State;
+import ch.judos.generic.control.RunnableThrowsException;
 import ch.judos.generic.data.date.Date;
 import ch.judos.generic.data.date.Time;
 import ch.judos.generic.files.FileUtils;
@@ -34,6 +35,7 @@ public class BackupController {
 	private boolean finished;
 	private Runnable completion;
 	private TaskBarProgressWrapper progressTaskBar;
+	private RunnableThrowsException openLogFile;
 
 	public BackupController(MainFrame frame, BackupOptions options) {
 		this.frame = frame;
@@ -98,11 +100,15 @@ public class BackupController {
 			return;
 		if (!this.options.onlyCreateLog)
 			updatePathEntryDates();
-		createAndOpenLogFile();
+		File logFile = createLogFile();
+		this.openLogFile = () -> {
+			FileUtils.openFileWithDefaultApplication(logFile);
+		};
 
 		this.updateUiThread.stop();
 		this.finished = true;
 		updateUI();
+		this.backupFrame.setFinishedUI(this.completion, this.openLogFile);
 		this.progressTaskBar.setState(State.NO_PROGRESS);
 	}
 
@@ -112,7 +118,7 @@ public class BackupController {
 		}
 	}
 
-	private void createAndOpenLogFile() {
+	private File createLogFile() {
 		try {
 			File logFile = null;
 			File logFolder = new File("Logs/");
@@ -123,19 +129,18 @@ public class BackupController {
 				logFile = new File(logFolder, new Date().toString("Y-m-d") + " " + new Time()
 					.toString(" H/hi") + " Backup Log.txt");
 			}
-			else if (this.options.openLog) {
+			else {
 				logFile = new File(logFolder, "temp.txt");
 			}
 			if (logFile != null) {
 				this.data.writeLogTo(logFile, this.options);
-				if (this.options.openLog) {
-					FileUtils.openFileWithDefaultApplication(logFile);
-				}
 			}
+			return logFile;
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 
 	private void updateUI() {
@@ -147,13 +152,6 @@ public class BackupController {
 		if (this.backupThread != null) {
 			this.backupFrame.currentOperationLabel.setText(this.backupThread
 				.getCurrentOperationText());
-		}
-		if (this.finished) {
-			if (this.options.onlyCreateLog)
-				this.backupFrame.setTitle(Text.get("log_finished"));
-			else
-				this.backupFrame.setTitle(Text.get("backup_finished"));
-			this.backupFrame.setButtonToFinished(this.completion);
 		}
 	}
 

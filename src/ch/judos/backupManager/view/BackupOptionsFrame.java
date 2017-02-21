@@ -14,7 +14,6 @@ public class BackupOptionsFrame extends JDialog {
 
 	private JRadioButton logOnlyButton;
 	private JRadioButton fullBackupButton;
-	private JCheckBox openLogCheckbox;
 	private JCheckBox saveLogCheckbox;
 	private JButton startButton;
 	private JButton cancelButton;
@@ -38,9 +37,8 @@ public class BackupOptionsFrame extends JDialog {
 
 	private void startBackup() {
 		boolean onlyCreateLog = this.logOnlyButton.isSelected();
-		boolean openLog = this.openLogCheckbox.isSelected();
 		boolean saveLog = this.saveLogCheckbox.isSelected();
-		BackupOptions options = new BackupOptions(onlyCreateLog, openLog, saveLog);
+		BackupOptions options = new BackupOptions(onlyCreateLog, saveLog);
 		this.completion.accept(options);
 	}
 
@@ -64,27 +62,21 @@ public class BackupOptionsFrame extends JDialog {
 		processMode.add(this.logOnlyButton);
 		add(this.logOnlyButton, c);
 
-		c.gridy = 2;
+		c.gridy++;
 		this.fullBackupButton = new JRadioButton(Text.get("full_backup"));
 		processMode.add(this.fullBackupButton);
 		add(this.fullBackupButton, c);
 
-		c.gridy = 3;
+		c.gridy++;
 		c.insets.left = 5;
 		add(new JLabel(Text.get("afterwards") + ":"), c);
 
-		c.gridy = 4;
-		c.insets.left = 20;
-		this.openLogCheckbox = new JCheckBox(Text.get("open_log"));
-		this.openLogCheckbox.setSelected(true);
-		add(this.openLogCheckbox, c);
-
-		c.gridy = 5;
+		c.gridy++;
 		this.saveLogCheckbox = new JCheckBox(Text.get("store_log"));
 		this.saveLogCheckbox.setSelected(true);
 		add(this.saveLogCheckbox, c);
 
-		c.gridy = 6;
+		c.gridy++;
 		c.insets.left = 5;
 		c.gridwidth = 1;
 		this.startButton = new JButton(Text.get("start_backup"), Images.backup());

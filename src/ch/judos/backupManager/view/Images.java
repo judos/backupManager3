@@ -29,6 +29,10 @@ public class Images {
 		return new ImageIcon("AppData/backup icon-40.png");
 	}
 
+	public static Icon read() {
+		return new ImageIcon("AppData/read icon-40.png");
+	}
+
 	public static Image backupImage() throws Exception {
 		return ImageIO.read(new File("AppData/backup icon-40.png"));
 	}

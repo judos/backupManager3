@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -12,6 +11,7 @@ import javax.swing.*;
 
 import ch.judos.backupManager.model.BackupOptions;
 import ch.judos.backupManager.model.Text;
+import ch.judos.generic.control.RunnableThrowsException;
 
 public class BackupProgressFrame extends JDialog {
 
@@ -24,6 +24,9 @@ public class BackupProgressFrame extends JDialog {
 	public Runnable onCancel;
 	public JLabel currentOperationLabel;
 	public Runnable onFinish;
+	private GridBagConstraints buttonGridConstraints;
+	private JButton closeButton;
+	private JButton openLogButton;
 	private static final long serialVersionUID = -163978212692777202L;
 
 	public BackupProgressFrame(MainFrame parent, BackupOptions options) {
@@ -60,6 +63,7 @@ public class BackupProgressFrame extends JDialog {
 
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.insets = new Insets(5, 5, 5, 5);
+		c.gridwidth = 2;
 		c.weightx = 1;
 		c.gridy = 0;
 		this.logProgressLabel = new JLabel(Text.get("checking_folders", 0, 0));
@@ -94,6 +98,7 @@ public class BackupProgressFrame extends JDialog {
 		c.gridy++;
 		c.weighty = 0;
 		c.fill = GridBagConstraints.HORIZONTAL;
+		this.buttonGridConstraints = c;
 		this.cancelButton = new JButton(Text.get("cancel"), Images.cancel());
 		this.add(this.cancelButton, c);
 	}
@@ -106,16 +111,27 @@ public class BackupProgressFrame extends JDialog {
 		return result;
 	}
 
-	public void setButtonToFinished(Runnable completion) {
-		for (ActionListener l : this.cancelButton.getActionListeners()) {
-			this.cancelButton.removeActionListener(l);
-		}
-		this.cancelButton.setText(Text.get("close_finished_dialog"));
-		this.cancelButton.setIcon(Images.done());
-		this.cancelButton.addActionListener(event -> {
+	public void setFinishedUI(Runnable completion, RunnableThrowsException openLogFile) {
+		if (this.options.onlyCreateLog)
+			setTitle(Text.get("log_finished"));
+		else
+			setTitle(Text.get("backup_finished"));
+		this.remove(this.cancelButton);
+		GridBagConstraints c = this.buttonGridConstraints;
+		c.gridwidth = 1;
+		this.closeButton = new JButton(Text.get("close_finished_dialog"), Images.done());
+		this.add(this.closeButton, c);
+		this.closeButton.addActionListener(event -> {
 			this.dispose();
 			completion.run();
 		});
+
+		c.gridx = 1;
+		this.openLogButton = new JButton(Text.get("open_log"), Images.read());
+		this.add(this.openLogButton, c);
+		this.openLogButton.addActionListener(event -> openLogFile
+			.runWithoutRuntimeException());
+		this.rootPane.updateUI();
 	}
 
 }
