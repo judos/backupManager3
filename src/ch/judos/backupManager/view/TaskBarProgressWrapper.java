@@ -11,8 +11,7 @@ import org.bridj.jawt.JAWTUtils;
 public class TaskBarProgressWrapper {
 
 	private ITaskbarList3 list;
-	private Pointer<?> windowHandlePointer;
-	private double progress;
+	private Pointer<Integer> windowHandlePointer;
 
 	public enum State {
 		NO_PROGRESS(TbpFlag.TBPF_NOPROGRESS), INDETERMINED(TbpFlag.TBPF_INDETERMINATE),
@@ -31,11 +30,10 @@ public class TaskBarProgressWrapper {
 
 	@SuppressWarnings({"deprecation", "unchecked"})
 	public TaskBarProgressWrapper(Component component) {
-		this.progress = 0;
 		try {
 			this.list = COMRuntime.newInstance(ITaskbarList3.class);
 			long hwndVal = JAWTUtils.getNativePeerHandle(component);
-			this.windowHandlePointer = Pointer.pointerToAddress(hwndVal);
+			this.windowHandlePointer = (Pointer<Integer>) Pointer.pointerToAddress(hwndVal);
 		}
 		catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -54,9 +52,6 @@ public class TaskBarProgressWrapper {
 	}
 
 	public void setState(State state) {
-		// this.list.SetProgressValue((Pointer<Integer>)
-		// this.windowHandlePointer, (int) (progress
-		// * 300), 300);
 		this.list.SetProgressState((Pointer<Integer>) this.windowHandlePointer, state
 			.getFlag());
 	}

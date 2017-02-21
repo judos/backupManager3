@@ -100,10 +100,10 @@ public class BackupController {
 			updatePathEntryDates();
 		createAndOpenLogFile();
 
-		this.progressTaskBar.setState(State.NO_PROGRESS);
 		this.updateUiThread.stop();
 		this.finished = true;
 		updateUI();
+		this.progressTaskBar.setState(State.NO_PROGRESS);
 	}
 
 	private void updatePathEntryDates() {
