@@ -1,8 +1,11 @@
 package ch.judos.backupManager.controller.backup;
 
+import java.util.List;
+
 import ch.judos.backupManager.model.BackupData;
 import ch.judos.backupManager.model.Text;
 import ch.judos.backupManager.model.operations.FileOperation;
+import ch.judos.generic.exception.ExceptionWithKey;
 import ch.judos.generic.files.FileSize;
 
 public class BackupFilesThread extends Thread implements ProgressTrackable {
@@ -55,9 +58,11 @@ public class BackupFilesThread extends Thread implements ProgressTrackable {
 	private void workOn(FileOperation operation) {
 		this.currentOperation = operation;
 		try {
-			operation.execute();
+			List<ExceptionWithKey> exceptionList = operation.execute();
+			this.data.addError(exceptionList);
 		}
 		catch (Exception e) {
+			System.err.println("Should not happen: " + e.getMessage());
 			e.printStackTrace();
 		}
 		this.elementsProcessed += operation.getElementsToProcess();

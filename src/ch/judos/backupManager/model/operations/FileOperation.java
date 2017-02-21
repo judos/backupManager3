@@ -1,6 +1,9 @@
 package ch.judos.backupManager.model.operations;
 
+import java.util.List;
+
 import ch.judos.backupManager.model.Text;
+import ch.judos.generic.exception.ExceptionWithKey;
 
 public abstract class FileOperation {
 	public FileOperation dependsOn;
@@ -39,7 +42,7 @@ public abstract class FileOperation {
 		return this.dependsOn;
 	}
 
-	public abstract void execute();
+	public abstract List<ExceptionWithKey> execute();
 
 	/**
 	 * @return false for Operations on folders

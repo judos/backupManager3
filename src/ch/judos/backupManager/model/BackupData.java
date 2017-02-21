@@ -3,6 +3,7 @@ package ch.judos.backupManager.model;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -12,6 +13,7 @@ import ch.judos.generic.data.DynamicList;
 import ch.judos.generic.data.StringUtils;
 import ch.judos.generic.data.date.DateTime;
 import ch.judos.generic.data.date.Time;
+import ch.judos.generic.exception.ExceptionWithKey;
 import ch.judos.generic.files.FileSize;
 import ch.judos.generic.files.FileUtils;
 
@@ -23,13 +25,23 @@ public class BackupData {
 	public DynamicList<String> backupLog;
 	private final int backupLogInitialSize = 1000;
 	private DateTime backupStarted;
+	private DynamicList<ExceptionWithKey> errors;
 
 	public BackupData() {
 		this.taskList = new LinkedBlockingQueue<>();
-		this.backupLog = new DynamicList<String>(backupLogInitialSize);
+		this.backupLog = new DynamicList<>(backupLogInitialSize);
+		this.errors = new DynamicList<>();
 		this.backupStarted = new DateTime();
 		this.elementsToProcess = 0;
 		this.bytesToProcess = 0;
+	}
+
+	public void addError(List<ExceptionWithKey> exceptionList) {
+		this.errors.addAll(exceptionList);
+	}
+
+	public void addError(ExceptionWithKey exception) {
+		this.errors.add(exception);
 	}
 
 	public void add(FileOperation operation) {
@@ -77,7 +89,6 @@ public class BackupData {
 				writer.newLine();
 			}
 			writer.newLine();
-			writer.newLine();
 			writer.write(Text.get("log_synchronized") + ":");
 			writer.newLine();
 
@@ -87,6 +98,17 @@ public class BackupData {
 			writer.write(" " + Text.get("log_synchronized_data") + ": " + FileSize
 				.getSizeNiceFromBytes(this.bytesToProcess));
 			writer.newLine();
+			writer.newLine();
+			writer.write(Text.get("errors"));
+			writer.newLine();
+			int minLength = this.errors.stream().mapToInt(error -> error.getKey().length())
+				.max().orElseGet(() -> 0);
+			for (ExceptionWithKey e : this.errors) {
+				writer.write(" " + StringUtils.extendRightWith(e.getKey(), minLength, " ")
+					+ " - " + e.getMessage());
+				writer.newLine();
+			}
+
 			writer.newLine();
 			writer.write(Text.get("log_legend1", Text.get("log_add"), Text.get("log_remove"),
 				Text.get("log_change")));

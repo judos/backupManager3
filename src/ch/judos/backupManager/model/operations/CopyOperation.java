@@ -1,7 +1,10 @@
 package ch.judos.backupManager.model.operations;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
+import ch.judos.generic.exception.ExceptionWithKey;
 import ch.judos.generic.files.FileUtils;
 
 public class CopyOperation extends FileOperation {
@@ -34,8 +37,10 @@ public class CopyOperation extends FileOperation {
 		}
 	}
 
-	public void execute() {
-		FileUtils.copyDirectory(this.source, this.target);
+	public List<ExceptionWithKey> execute() {
+		ArrayList<ExceptionWithKey> list = new ArrayList<>();
+		FileUtils.copyDirectory(this.source, this.target, list);
+		return list;
 	}
 
 	@Override

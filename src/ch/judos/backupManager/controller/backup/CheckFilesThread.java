@@ -14,6 +14,7 @@ import ch.judos.backupManager.model.operations.FileOperation.Tag;
 import ch.judos.backupManager.model.operations.RemoveOperation;
 import ch.judos.generic.data.DynamicList;
 import ch.judos.generic.data.TupleR;
+import ch.judos.generic.exception.ExceptionWithKey;
 
 public class CheckFilesThread extends Thread implements ProgressTrackable {
 
@@ -77,12 +78,14 @@ public class CheckFilesThread extends Thread implements ProgressTrackable {
 		ArrayList<String> newPathsToCheck = new ArrayList<String>();
 		String[] filesChange = folderChange.list();
 		if (filesChange == null) {
-			System.err.println("ERROR: " + folderChange);
+			this.backupData.addError(new ExceptionWithKey("READ_ERROR",
+				"Path is not a folder: " + folderChange.getAbsolutePath()));
 			return newPathsToCheck;
 		}
 		String[] filesBackup = folderBackup.list();
 		if (filesBackup == null) {
-			System.err.println("ERROR: " + folderBackup);
+			this.backupData.addError(new ExceptionWithKey("READ_ERROR",
+				"Path is not a folder: " + folderBackup.getAbsolutePath()));
 			return newPathsToCheck;
 		}
 		HashSet<String> filesBackupSet = new HashSet<String>(Arrays.asList(filesBackup));
