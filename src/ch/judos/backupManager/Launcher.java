@@ -4,17 +4,26 @@ import java.io.IOException;
 
 import ch.judos.backupManager.controller.MainFrameController;
 import ch.judos.backupManager.model.PathStorage;
+import ch.judos.backupManager.model.Text;
 import ch.judos.backupManager.view.MainFrame;
+import ch.judos.generic.gui.Notification;
 
 public class Launcher {
 	public static final String VERSION = "3.0";
 	private PathStorage storage;
-	private MainFrameController controller;
 	private static final File BACKUP_PATH_FILE = new File("backupPaths.csv");
 
 	public static void main(String[] args) throws Exception {
+		setupGlobalExceptionHandler();
 		Launcher launcher = new Launcher();
 		launcher.startApp();
+	}
+
+	private static void setupGlobalExceptionHandler() {
+		Thread.setDefaultUncaughtExceptionHandler((thread, exception) -> {
+			Notification.notifyErr("Error", Text.get("error_occured_in_thread", thread
+				.getName()) + ":\n\n" + exception.toString());
+		});
 	}
 
 	private void startApp() throws Exception {
@@ -22,8 +31,7 @@ public class Launcher {
 		storage.loadFromFile(BACKUP_PATH_FILE);
 		MainFrame frame = new MainFrame(storage);
 		frame.addShutdownListener(() -> this.requestShutdown());
-		this.controller = new MainFrameController(frame, this.storage);
-
+		new MainFrameController(frame, this.storage);
 		frame.setVisible(true);
 	}
 

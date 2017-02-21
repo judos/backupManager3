@@ -1,5 +1,5 @@
 check problems with files which could not get copied
-show "open log" button when backup is finished
 show paths as red if they are not available in the main window
+selection should happen with 1 click on whole row
 
 bundle release as jar and publish
