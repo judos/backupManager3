@@ -8,6 +8,7 @@ import java.util.Iterator;
 import ch.judos.generic.data.DynamicList;
 import ch.judos.generic.data.csv.CSVFileReader;
 import ch.judos.generic.data.csv.CSVFileWriter;
+import ch.judos.generic.exception.GlobalExceptionHandler;
 
 public class PathStorage implements Iterable<PathEntry> {
 
@@ -36,7 +37,8 @@ public class PathStorage implements Iterable<PathEntry> {
 						"selected"))));
 			}
 		}
-		catch (IOException e) {
+		catch (IOException exception) {
+			GlobalExceptionHandler.handle(exception);
 		}
 	}
 
