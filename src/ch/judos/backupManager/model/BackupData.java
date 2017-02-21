@@ -112,17 +112,24 @@ public class BackupData {
 				}
 				writer.newLine();
 			}
-			writer.write(Text.get("log_legend1", Text.get("log_add"), Text.get("log_remove"),
-				Text.get("log_change")));
-			writer.newLine();
-			writer.write(Text.get("log_legend2", Text.get("log_file"), Text.get(
-				"log_folder")));
-			writer.newLine();
-			writer.newLine();
 
-			for (String s : this.backupLog) {
-				writer.write(s);
+			if (this.backupLog.size() == 0) {
+				writer.write(Text.get("no_changes_detected"));
 				writer.newLine();
+			}
+			else {
+				writer.write(Text.get("log_legend1", Text.get("log_add"), Text.get(
+					"log_remove"), Text.get("log_change")));
+				writer.newLine();
+				writer.write(Text.get("log_legend2", Text.get("log_file"), Text.get(
+					"log_folder")));
+				writer.newLine();
+				writer.newLine();
+
+				for (String s : this.backupLog) {
+					writer.write(s);
+					writer.newLine();
+				}
 			}
 		}
 	}
