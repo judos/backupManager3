@@ -31,8 +31,9 @@ public class PathStorage implements Iterable<PathEntry> {
 			this.list = new DynamicList<PathEntry>();
 			for (int i = 0; i < reader.countEntries(); i++) {
 				HashMap<String, String> entry = reader.getEntry(i);
-				this.list.add(new PathEntry(entry.get("changePath"), entry.get("backupPath"),
-					entry.get("status"), Boolean.valueOf(entry.get("selected"))));
+				this.list.add(new PathEntry(new File(entry.get("changePath")), new File(entry
+					.get("backupPath")), entry.get("status"), Boolean.valueOf(entry.get(
+						"selected"))));
 			}
 		}
 		catch (IOException e) {
@@ -43,8 +44,9 @@ public class PathStorage implements Iterable<PathEntry> {
 		String[] attributes = {"changePath", "backupPath", "status", "selected"};
 		CSVFileWriter writer = new CSVFileWriter(attributes);
 		for (PathEntry entry : this.list) {
-			writer.addEntry(new String[]{entry.getChangePath(), entry.getBackupPath(), entry
-				.getLastBackup(), String.valueOf(entry.isSelected())});
+			writer.addEntry(new String[]{entry.getChangePath().getAbsolutePath(), entry
+				.getBackupPath().getAbsolutePath(), entry.getLastBackup(), String.valueOf(entry
+					.isSelected())});
 		}
 		writer.writeFile(backupPathFile);
 	}

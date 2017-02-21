@@ -95,10 +95,8 @@ public class CheckFilesThread extends Thread implements ProgressTrackable {
 			if (filesBackupSet.contains(file)) {
 				filesBackupSet.remove(file);
 				if (changedFile.isFile() != backupFile.isFile()) {
-					RemoveOperation remove = new RemoveOperation(backupFile, basePath + "/"
-						+ file);
-					CopyOperation copy = new CopyOperation(changedFile, backupFile, Tag.NEW,
-						basePath + "/" + file);
+					RemoveOperation remove = new RemoveOperation(backupFile);
+					CopyOperation copy = new CopyOperation(changedFile, backupFile, Tag.NEW);
 					copy.dependsOn = remove;
 					this.backupData.add(remove);
 					this.backupData.add(copy);
@@ -112,13 +110,11 @@ public class CheckFilesThread extends Thread implements ProgressTrackable {
 				}
 			}
 			else {
-				this.backupData.add(new CopyOperation(changedFile, backupFile, Tag.NEW,
-					basePath + "/" + file));
+				this.backupData.add(new CopyOperation(changedFile, backupFile, Tag.NEW));
 			}
 		}
 		for (String file : filesBackupSet) {
-			this.backupData.add(new RemoveOperation(new File(folderBackup, file), basePath
-				+ "/" + file));
+			this.backupData.add(new RemoveOperation(new File(folderBackup, file)));
 		}
 		return newPathsToCheck;
 	}
@@ -126,8 +122,7 @@ public class CheckFilesThread extends Thread implements ProgressTrackable {
 	private void compareFiles(File changedFile, File backupFile, String relativePath) {
 		if (!fileWasModified(changedFile, backupFile))
 			return;
-		this.backupData.add(new CopyOperation(changedFile, backupFile, Tag.CHANGED,
-			relativePath));
+		this.backupData.add(new CopyOperation(changedFile, backupFile, Tag.CHANGED));
 	}
 
 	private boolean fileWasModified(File changedFile, File backupFile) {

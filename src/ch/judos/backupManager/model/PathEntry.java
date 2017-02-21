@@ -1,24 +1,26 @@
 package ch.judos.backupManager.model;
 
+import java.io.File;
+
 public class PathEntry {
 
-	private String changePath;
-	private String backupPath;
+	private File changePath;
+	private File backupPath;
 	private String lastBackup;
 	private boolean selected;
 
-	public PathEntry(String changePath, String backupPath, String lastBackup, boolean selected) {
+	public PathEntry(File changePath, File backupPath, String lastBackup, boolean selected) {
 		this.changePath = changePath;
 		this.backupPath = backupPath;
 		this.lastBackup = lastBackup;
 		this.selected = selected;
 	}
 
-	public String getChangePath() {
+	public File getChangePath() {
 		return this.changePath;
 	}
 
-	public String getBackupPath() {
+	public File getBackupPath() {
 		return this.backupPath;
 	}
 

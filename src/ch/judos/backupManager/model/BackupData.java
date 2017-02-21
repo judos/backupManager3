@@ -80,12 +80,13 @@ public class BackupData {
 			writer.newLine();
 			int length = 0;
 			for (PathEntry entry : options.pathsForBackup) {
-				length = Math.max(length, entry.getChangePath().length());
+				length = Math.max(length, entry.getChangePath().getAbsolutePath().length());
 			}
 			for (PathEntry entry : options.pathsForBackup) {
-				String changePath = StringUtils.extendRightWith(entry.getChangePath(), length,
-					" ");
-				writer.write(" " + changePath + " -> " + entry.getBackupPath());
+				String changePath = StringUtils.extendRightWith(entry.getChangePath()
+					.getAbsolutePath(), length, " ");
+				writer.write(" " + changePath + " -> " + entry.getBackupPath()
+					.getAbsolutePath());
 				writer.newLine();
 			}
 			writer.newLine();

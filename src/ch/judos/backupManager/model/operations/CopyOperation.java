@@ -12,8 +12,8 @@ public class CopyOperation extends FileOperation {
 	private File target;
 	private ArrayList<ExceptionWithKey> exceptionList;
 
-	public CopyOperation(File source, File target, Tag operationTag, String relativePath) {
-		super(operationTag, relativePath);
+	public CopyOperation(File source, File target, Tag operationTag) {
+		super(operationTag, source);
 		this.source = source;
 		this.target = target;
 		calculateWork();

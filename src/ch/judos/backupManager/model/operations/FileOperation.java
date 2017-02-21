@@ -1,5 +1,6 @@
 package ch.judos.backupManager.model.operations;
 
+import java.io.File;
 import java.util.List;
 
 import ch.judos.backupManager.model.Text;
@@ -11,7 +12,7 @@ public abstract class FileOperation {
 	protected long bytesToProcess;
 	protected int elementsToProcess;
 	private Tag tag;
-	private String relativePath;
+	private File relativePath;
 
 	public enum State {
 		TODO, DONE;
@@ -32,7 +33,7 @@ public abstract class FileOperation {
 		}
 	}
 
-	public FileOperation(Tag operationTag, String relativePath) {
+	public FileOperation(Tag operationTag, File relativePath) {
 		this.currentState = State.TODO;
 		this.tag = operationTag;
 		this.relativePath = relativePath;
@@ -51,7 +52,7 @@ public abstract class FileOperation {
 
 	public String getLogLine() {
 		String prefix = isFile() ? Text.get("log_file") : Text.get("log_folder");
-		return prefix + this.tag + " " + this.relativePath;
+		return prefix + this.tag + " " + this.relativePath.getAbsolutePath();
 	}
 	public long getBytesToProcess() {
 		return this.bytesToProcess;

@@ -1,5 +1,5 @@
 check problems with files which could not get copied
-use front slashes everywhere in logs
 show "open log" button when backup is finished
+show paths as red if they are not available in the main window
 
 bundle release as jar and publish

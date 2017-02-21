@@ -11,8 +11,8 @@ public class RemoveOperation extends FileOperation {
 
 	private File remove;
 
-	public RemoveOperation(File remove, String relativePath) {
-		super(Tag.REMOVED, relativePath);
+	public RemoveOperation(File remove) {
+		super(Tag.REMOVED, remove);
 		this.remove = remove;
 		calculateWork();
 	}

@@ -24,7 +24,7 @@ public class AddPathFrame extends JDialog {
 
 	private JButton cancelButton;
 
-	private BiConsumer<String, String> addPathCompletion;
+	private BiConsumer<File, File> addPathCompletion;
 	private static final long serialVersionUID = -8915344722242312624L;
 
 	public AddPathFrame(JFrame parent) {
@@ -53,8 +53,7 @@ public class AddPathFrame extends JDialog {
 			File backupPath = new File(this.backupPathField.getText());
 			if (changePath.isDirectory() && changePath.exists() && backupPath.isDirectory()
 				&& backupPath.exists()) {
-				this.addPathCompletion.accept(changePath.getAbsolutePath(), backupPath
-					.getAbsolutePath());
+				this.addPathCompletion.accept(changePath, backupPath);
 			}
 		});
 	}
@@ -111,7 +110,7 @@ public class AddPathFrame extends JDialog {
 		add(buttons, c);
 	}
 
-	public void setAddPathListener(BiConsumer<String, String> addPath) {
+	public void setAddPathListener(BiConsumer<File, File> addPath) {
 		this.addPathCompletion = addPath;
 	}
 
