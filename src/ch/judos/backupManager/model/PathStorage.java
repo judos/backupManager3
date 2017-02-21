@@ -1,6 +1,7 @@
 package ch.judos.backupManager.model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,15 +28,18 @@ public class PathStorage implements Iterable<PathEntry> {
 	}
 
 	public void loadFromFile(File file) {
+		this.list = new DynamicList<PathEntry>();
 		try {
 			CSVFileReader reader = CSVFileReader.readFile(file);
-			this.list = new DynamicList<PathEntry>();
 			for (int i = 0; i < reader.countEntries(); i++) {
 				HashMap<String, String> entry = reader.getEntry(i);
 				this.list.add(new PathEntry(new File(entry.get("changePath")), new File(entry
 					.get("backupPath")), entry.get("status"), Boolean.valueOf(entry.get(
 						"selected"))));
 			}
+		}
+		catch (FileNotFoundException exception) {
+			// do nothing, it's fine to have an empty list of paths
 		}
 		catch (IOException exception) {
 			GlobalExceptionHandler.handle(exception);

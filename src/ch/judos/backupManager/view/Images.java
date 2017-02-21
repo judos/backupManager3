@@ -7,26 +7,28 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import ch.judos.backupManager.model.Constants;
+
 public class Images {
 
 	public static Icon add() {
-		return new ImageIcon("AppData/add icon-40.png");
+		return new ImageIcon(Constants.APP_DATA.getPath() + "/add icon-40.png");
 	}
 
 	public static Icon done() {
-		return new ImageIcon("AppData/ok icon-40.png");
+		return new ImageIcon(Constants.APP_DATA.getPath() + "/ok icon-40.png");
 	}
 
 	public static Icon cancel() {
-		return new ImageIcon("AppData/cancel icon-40.png");
+		return new ImageIcon(Constants.APP_DATA.getPath() + "/cancel icon-40.png");
 	}
 
 	public static Icon remove() {
-		return new ImageIcon("AppData/remove icon-40.png");
+		return new ImageIcon(Constants.APP_DATA.getPath() + "/remove icon-40.png");
 	}
 
 	public static Icon backup() {
-		return new ImageIcon("AppData/backup icon-40.png");
+		return new ImageIcon(Constants.APP_DATA.getPath() + "/backup icon-40.png");
 	}
 
 	public static Icon read() {

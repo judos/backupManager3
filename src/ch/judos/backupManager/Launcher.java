@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.IOException;
 
 import ch.judos.backupManager.controller.MainFrameController;
+import ch.judos.backupManager.model.Constants;
 import ch.judos.backupManager.model.PathStorage;
 import ch.judos.backupManager.view.MainFrame;
 import ch.judos.generic.exception.GlobalExceptionHandler;
@@ -10,7 +11,8 @@ import ch.judos.generic.exception.GlobalExceptionHandler;
 public class Launcher {
 	public static final String VERSION = "3.0";
 	private PathStorage storage;
-	private static final File BACKUP_PATH_FILE = new File("backupPaths.csv");
+	private static final File BACKUP_PATH_FILE = new File(Constants.APP_DATA,
+		"backupPaths.csv");
 
 	public static void main(String[] args) throws Exception {
 		setupGlobalExceptionHandler();
