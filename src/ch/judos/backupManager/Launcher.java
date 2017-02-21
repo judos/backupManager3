@@ -1,6 +1,8 @@
 package ch.judos.backupManager;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import ch.judos.backupManager.controller.MainFrameController;
 import ch.judos.backupManager.model.PathStorage;
@@ -21,8 +23,12 @@ public class Launcher {
 
 	private static void setupGlobalExceptionHandler() {
 		Thread.setDefaultUncaughtExceptionHandler((thread, exception) -> {
+			StringWriter exceptionStackTrace = new StringWriter();
+			PrintWriter printWriter = new PrintWriter(exceptionStackTrace);
+			exception.printStackTrace(printWriter);
+			System.err.println(exceptionStackTrace);
 			Notification.notifyErr("Error", Text.get("error_occured_in_thread", thread
-				.getName()) + ":\n\n" + exception.toString());
+				.getName()) + ":\n\n" + exceptionStackTrace);
 		});
 	}
 

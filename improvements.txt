@@ -1,5 +1,7 @@
-check problems with files which could not get copied
-show paths as red if they are not available in the main window
 selection should happen with 1 click on whole row
 
 bundle release as jar and publish
+
+
+- Possible late update:
+show paths as red if they are not available in the main window

@@ -16,8 +16,8 @@ public class CopyOperation extends FileOperation {
 		super(operationTag, source);
 		this.source = source;
 		this.target = target;
-		calculateWork();
 		this.exceptionList = new ArrayList<>();
+		calculateWork();
 	}
 
 	private void calculateWork() {
