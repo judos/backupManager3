@@ -1,6 +1,6 @@
 # JAVA files
 *.class
-*Log.txt
+Logs/
 bin/
 
 # build tool files
