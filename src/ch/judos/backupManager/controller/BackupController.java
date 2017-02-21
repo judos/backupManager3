@@ -115,17 +115,16 @@ public class BackupController {
 	private void createAndOpenLogFile() {
 		try {
 			File logFile = null;
+			File logFolder = new File("Logs/");
+			if (!logFolder.exists()) {
+				logFolder.mkdirs();
+			}
 			if (this.options.saveLog) {
-				File logFolder = new File("Logs/");
-				if (!logFolder.exists()) {
-					logFolder.mkdirs();
-				}
 				logFile = new File(logFolder, new Date().toString("Y-m-d") + " " + new Time()
 					.toString(" H/hi") + " Backup Log.txt");
 			}
 			else if (this.options.openLog) {
-				logFile = File.createTempFile(new Date().toString() + " Backup Log - ",
-					".txt");
+				logFile = new File(logFolder, "temp.txt");
 			}
 			if (logFile != null) {
 				this.data.writeLogTo(logFile, this.options);
