@@ -71,7 +71,10 @@ public class BackupProgressFrame extends JDialog {
 
 		if (!this.options.onlyCreateLog) {
 			c.gridy++;
-			this.backupProgressLabel = new JLabel(Text.get("synchronizing_files", ""));
+			String elements = "0 / 0 " + Text.get("synchronizing_files_elements");
+			String data = "0 Bytes / 0 Bytes";
+			String all = Text.get("synchronizing_files", elements + ", " + data);
+			this.backupProgressLabel = new JLabel(all);
 			this.add(this.backupProgressLabel, c);
 
 			c.gridy++;

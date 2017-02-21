@@ -28,6 +28,9 @@ public class BackupFilesThread extends Thread implements ProgressTrackable {
 
 	@Override
 	public double getProgress() {
+		if (this.data.getElementsToProcess() == 0 && this.data.getBytesToProcess() == 0) {
+			return 1;
+		}
 		double progressFiles = (double) this.elementsProcessed / this.data
 			.getElementsToProcess();
 		double progressData = (double) this.bytesProcessed / this.data.getBytesToProcess();
