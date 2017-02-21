@@ -38,6 +38,9 @@ public class BackupProgressFrame extends JDialog {
 			setTitle(Text.get("backup_running"));
 		setupComponents();
 		pack();
+		if (!this.options.onlyCreateLog) {
+			this.backupProgressLabel.setText(Text.get("synchronizing_files", ""));
+		}
 		setLocationRelativeTo(parent);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addActionListeners();
@@ -75,8 +78,8 @@ public class BackupProgressFrame extends JDialog {
 
 		if (!this.options.onlyCreateLog) {
 			c.gridy++;
-			String elements = "0 / 0 " + Text.get("synchronizing_files_elements");
-			String data = "0 Bytes / 0 Bytes";
+			String elements = "12345 / 67890 " + Text.get("synchronizing_files_elements");
+			String data = "100 Bytes / 100 Bytes";
 			String all = Text.get("synchronizing_files", elements + ", " + data);
 			this.backupProgressLabel = new JLabel(all);
 			this.add(this.backupProgressLabel, c);
