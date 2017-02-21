@@ -49,13 +49,14 @@ public class BackupController {
 		this.backupFrame.setVisible(true);
 
 		this.checkThread.onFinished = this::startActualBackup;
-		this.checkThread.start();
 
 		this.progressTaskBar = new TaskBarProgressWrapper(this.frame);
-		progressTaskBar.setState(State.NORMAL);
+		this.progressTaskBar.setState(State.NORMAL);
 
 		this.updateUiThread = new Timer(300, event -> updateUI());
 		this.updateUiThread.start();
+
+		this.checkThread.start();
 	}
 
 	private void promptCancelBackup() {
