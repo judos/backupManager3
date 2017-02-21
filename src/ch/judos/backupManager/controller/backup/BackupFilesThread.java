@@ -36,10 +36,11 @@ public class BackupFilesThread extends Thread implements ProgressTrackable {
 
 	@Override
 	public String getProgressText() {
-		return this.elementsProcessed + " / " + this.data.getElementsToProcess() + " " + Text
-			.get("synchronizing_files_elements") + "  " + FileSize.getSizeNiceFromBytes(
-				this.bytesProcessed) + " / " + FileSize.getSizeNiceFromBytes(this.data
-					.getBytesToProcess());
+		String elements = this.elementsProcessed + " / " + this.data.getElementsToProcess()
+			+ " " + Text.get("synchronizing_files_elements");
+		String size = FileSize.getSizeNiceFromBytes(this.bytesProcessed) + " / " + FileSize
+			.getSizeNiceFromBytes(this.data.getBytesToProcess());
+		return Text.get("synchronizing_files", elements + ", " + size);
 	}
 
 	@Override
