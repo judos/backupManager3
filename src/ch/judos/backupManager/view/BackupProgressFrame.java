@@ -122,7 +122,6 @@ public class BackupProgressFrame extends JDialog {
 		this.closeButton = new JButton(Text.get("close_finished_dialog"), Images.done());
 		this.add(this.closeButton, c);
 		this.closeButton.addActionListener(event -> {
-			this.dispose();
 			completion.run();
 		});
 

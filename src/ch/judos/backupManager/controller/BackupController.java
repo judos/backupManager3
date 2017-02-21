@@ -108,7 +108,13 @@ public class BackupController {
 		this.updateUiThread.stop();
 		this.finished = true;
 		updateUI();
-		this.backupFrame.setFinishedUI(this.completion, this.openLogFile);
+		Runnable close = () -> {
+			this.backupFrame.dispose();
+			if (this.completion != null)
+				this.completion.run();
+		};
+		this.backupFrame.setFinishedUI(close, this.openLogFile);
+		this.backupFrame.onCancel = close;
 		this.progressTaskBar.setState(State.NO_PROGRESS);
 	}
 
