@@ -1,6 +1,5 @@
 package ch.judos.backupManager.view.table;
 import javax.swing.JTable;
-import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
@@ -10,13 +9,10 @@ import ch.judos.backupManager.model.Text;
 
 public class PathTableModel implements TableModel {
 
-	private static final long serialVersionUID = 6698625603526785005L;
 	private PathStorage storage;
-	private JTable table;
 
 	public PathTableModel(PathStorage storage, JTable table) {
 		this.storage = storage;
-		this.table = table;
 	}
 
 	@Override
@@ -38,7 +34,7 @@ public class PathTableModel implements TableModel {
 		else if (columnIndex == 2)
 			return Text.get("status");
 		else
-			return "X";
+			return "";
 	}
 
 	@Override
@@ -50,7 +46,7 @@ public class PathTableModel implements TableModel {
 
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		return columnIndex == 3;
+		return false;
 	}
 
 	@Override
@@ -75,11 +71,6 @@ public class PathTableModel implements TableModel {
 
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-		if (columnIndex == 3) {
-			PathEntry entry = this.storage.getPathEntry(rowIndex);
-			entry.setSelected((boolean) aValue);
-			SwingUtilities.invokeLater(this.table::updateUI);
-		}
 	}
 
 	@Override

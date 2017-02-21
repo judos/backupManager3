@@ -1,5 +1,4 @@
-selection should happen with 1 click on whole row
-
+remove path should remove the selected ones
 bundle release as jar and publish
 
 

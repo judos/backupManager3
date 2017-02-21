@@ -1,5 +1,7 @@
 package ch.judos.backupManager.view;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -7,6 +9,7 @@ import javax.swing.*;
 
 import ch.judos.backupManager.Launcher;
 import ch.judos.backupManager.controller.util.JTableColumnResizer;
+import ch.judos.backupManager.model.PathEntry;
 import ch.judos.backupManager.model.PathStorage;
 import ch.judos.backupManager.model.Text;
 import ch.judos.backupManager.view.table.CustomBooleanTableCellRenderer;
@@ -69,9 +72,18 @@ public class MainFrame extends JFrame {
 		this.table.setDefaultRenderer(Boolean.class, new CustomBooleanTableCellRenderer(
 			this.storage));
 		this.table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		// this.table.setRowSelectionAllowed(true);
-		// this.table.setColumnSelectionAllowed(false);
+		this.table.addMouseListener(new MouseAdapter() {
 
+			public void mousePressed(MouseEvent e) {
+				int rowIndex = table.rowAtPoint(e.getPoint());
+				if (rowIndex > -1) {
+					PathEntry entry = storage.getPathEntry(rowIndex);
+					entry.setSelected(!entry.isSelected());
+					SwingUtilities.invokeLater(table::updateUI);
+				}
+			}
+
+		});
 		resizeColumnWidths();
 
 		c.gridy = 1;
