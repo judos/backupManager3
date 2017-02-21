@@ -10,12 +10,14 @@ import ch.judos.generic.files.FileUtils;
 public class CopyOperation extends FileOperation {
 	private File source;
 	private File target;
+	private ArrayList<ExceptionWithKey> exceptionList;
 
 	public CopyOperation(File source, File target, Tag operationTag, String relativePath) {
 		super(operationTag, relativePath);
 		this.source = source;
 		this.target = target;
 		calculateWork();
+		this.exceptionList = new ArrayList<>();
 	}
 
 	private void calculateWork() {
@@ -29,7 +31,8 @@ public class CopyOperation extends FileOperation {
 			return;
 		}
 		if (file.listFiles() == null) {
-			System.err.println("ERROR: " + file);
+			this.exceptionList.add(new ExceptionWithKey("NOT_A_FILE_OR_DIRECTORY",
+				"Path is not a file or directory: " + file.getAbsolutePath()));
 			return;
 		}
 		for (File child : file.listFiles()) {
@@ -38,9 +41,8 @@ public class CopyOperation extends FileOperation {
 	}
 
 	public List<ExceptionWithKey> execute() {
-		ArrayList<ExceptionWithKey> list = new ArrayList<>();
-		FileUtils.copyDirectory(this.source, this.target, list);
-		return list;
+		FileUtils.copyDirectory(this.source, this.target, this.exceptionList);
+		return this.exceptionList;
 	}
 
 	@Override
