@@ -2,7 +2,5 @@
 *.class
 Logs/
 bin/
-backupPaths.csv
 
-# build tool files
-.gradle
+backupPaths.csv
