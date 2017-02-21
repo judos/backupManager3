@@ -99,17 +99,18 @@ public class BackupData {
 				.getSizeNiceFromBytes(this.bytesToProcess));
 			writer.newLine();
 			writer.newLine();
-			writer.write(Text.get("errors"));
-			writer.newLine();
-			int minLength = this.errors.stream().mapToInt(error -> error.getKey().length())
-				.max().orElseGet(() -> 0);
-			for (ExceptionWithKey e : this.errors) {
-				writer.write(" " + StringUtils.extendRightWith(e.getKey(), minLength, " ")
-					+ " - " + e.getMessage());
+			if (this.errors.size() > 0) {
+				writer.write(Text.get("errors") + ":");
+				writer.newLine();
+				int minLength = this.errors.stream().mapToInt(error -> error.getKey().length())
+					.max().orElseGet(() -> 0);
+				for (ExceptionWithKey e : this.errors) {
+					writer.write(" " + StringUtils.extendRightWith(e.getKey(), minLength, " ")
+						+ " - " + e.getMessage());
+					writer.newLine();
+				}
 				writer.newLine();
 			}
-
-			writer.newLine();
 			writer.write(Text.get("log_legend1", Text.get("log_add"), Text.get("log_remove"),
 				Text.get("log_change")));
 			writer.newLine();
