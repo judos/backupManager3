@@ -35,9 +35,9 @@ public class MainFrame extends JFrame {
 		setIconImage(Images.backupImage());
 		addComponents();
 
-		Dimension prefered = this.getPreferredSize();
-		this.setPreferredSize(new Dimension(Math.max(600, prefered.width + 50),
-			prefered.height));
+		Dimension preferred = this.getPreferredSize();
+		this.setPreferredSize(new Dimension(Math.max(600, preferred.width + 50),
+			preferred.height));
 		this.setMinimumSize(new Dimension(300, 200));
 		this.pack();
 		this.setLocationRelativeTo(null);

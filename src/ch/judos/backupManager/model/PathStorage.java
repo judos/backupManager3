@@ -77,4 +77,13 @@ public class PathStorage implements Iterable<PathEntry> {
 		return result;
 	}
 
+	public void removeSelectedPaths() {
+		Iterator<PathEntry> iterator = this.iterator();
+		while (iterator.hasNext()) {
+			PathEntry entry = iterator.next();
+			if (entry.isSelected())
+				iterator.remove();
+		}
+	}
+
 }

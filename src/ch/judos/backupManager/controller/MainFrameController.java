@@ -37,11 +37,7 @@ public class MainFrameController {
 	}
 
 	private void removeDirectories() {
-		int[] selected = this.frame.table.getSelectedRows();
-		if (selected.length == 0 || this.frame.table.getRowCount() == 0)
-			return;
-		this.frame.table.removeRowSelectionInterval(0, this.frame.table.getRowCount() - 1);
-		this.storage.removePathIndexes(selected);
+		this.storage.removeSelectedPaths();
 		this.frame.table.updateUI();
 	}
 
