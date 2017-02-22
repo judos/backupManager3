@@ -1,6 +1,5 @@
 package ch.judos.backupManager;
 import java.io.File;
-import java.io.IOException;
 
 import ch.judos.backupManager.controller.MainFrameController;
 import ch.judos.backupManager.model.Constants;
@@ -34,13 +33,9 @@ public class Launcher {
 	}
 
 	private void requestShutdown() {
-		try {
+		GlobalExceptionHandler.runAndHandle(() -> {
 			this.storage.saveToFile(BACKUP_PATH_FILE);
-			System.exit(0);
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-
+		});
+		System.exit(0);
 	}
 }

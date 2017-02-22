@@ -1,4 +1,2 @@
-bundle release as jar and publish
-
 - Possible late update:
 show paths as red if they are not available in the main window

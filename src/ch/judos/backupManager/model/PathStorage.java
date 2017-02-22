@@ -54,6 +54,7 @@ public class PathStorage implements Iterable<PathEntry> {
 				.getBackupPath().getAbsolutePath(), entry.getLastBackup(), String.valueOf(entry
 					.isSelected())});
 		}
+		backupPathFile.getParentFile().mkdirs();
 		writer.writeFile(backupPathFile);
 	}
 
