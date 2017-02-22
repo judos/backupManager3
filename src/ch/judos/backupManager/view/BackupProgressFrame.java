@@ -11,7 +11,7 @@ import javax.swing.*;
 
 import ch.judos.backupManager.model.BackupOptions;
 import ch.judos.backupManager.model.Text;
-import ch.judos.generic.control.RunnableThrowsException;
+import ch.judos.generic.exception.RunnableThrowsException;
 
 public class BackupProgressFrame extends JDialog {
 

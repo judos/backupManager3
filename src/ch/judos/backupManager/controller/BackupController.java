@@ -17,9 +17,9 @@ import ch.judos.backupManager.view.BackupProgressFrame;
 import ch.judos.backupManager.view.MainFrame;
 import ch.judos.backupManager.view.TaskBarProgressWrapper;
 import ch.judos.backupManager.view.TaskBarProgressWrapper.State;
-import ch.judos.generic.control.RunnableThrowsException;
 import ch.judos.generic.data.date.Date;
 import ch.judos.generic.data.date.Time;
+import ch.judos.generic.exception.RunnableThrowsException;
 import ch.judos.generic.files.FileUtils;
 import ch.judos.generic.gui.Notification;
 

@@ -1,42 +1,54 @@
 package ch.judos.backupManager.view;
 
 import java.awt.Image;
-import java.io.File;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import ch.judos.backupManager.model.Constants;
-
 public class Images {
 
+	private static ImageIcon loadIcon(String relative) {
+		return new ImageIcon(Images.class.getResource("/AppData/" + relative));
+	}
+
+	private static BufferedImage loadImage(String relative) {
+		try {
+			return ImageIO.read(Images.class.getResource("/AppData/" + relative));
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static Icon add() {
-		return new ImageIcon(Constants.APP_DATA.getPath() + "/add icon-40.png");
+		return loadIcon("add icon-40.png");
 	}
 
 	public static Icon done() {
-		return new ImageIcon(Constants.APP_DATA.getPath() + "/ok icon-40.png");
+		return loadIcon("ok icon-40.png");
 	}
 
 	public static Icon cancel() {
-		return new ImageIcon(Constants.APP_DATA.getPath() + "/cancel icon-40.png");
+		return loadIcon("cancel icon-40.png");
 	}
 
 	public static Icon remove() {
-		return new ImageIcon(Constants.APP_DATA.getPath() + "/remove icon-40.png");
+		return loadIcon("remove icon-40.png");
 	}
 
 	public static Icon backup() {
-		return new ImageIcon(Constants.APP_DATA.getPath() + "/backup icon-40.png");
+		return loadIcon("backup icon-40.png");
 	}
 
 	public static Icon read() {
-		return new ImageIcon("AppData/read icon-40.png");
+		return loadIcon("read icon-40.png");
 	}
 
 	public static Image backupImage() throws Exception {
-		return ImageIO.read(new File("AppData/backup icon-40.png"));
+		return loadImage("backup icon-40.png");
 	}
 
 }
