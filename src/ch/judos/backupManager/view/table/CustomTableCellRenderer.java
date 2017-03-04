@@ -18,7 +18,8 @@ public class CustomTableCellRenderer extends DefaultTableCellRenderer {
 	private static final int INDEX_CHANGE_PATH = 0;
 	private static final int INDEX_BACKUP_PATH = 1;
 	private static final Border EMPTY_BORDER = BorderFactory.createEmptyBorder(2, 5, 2, 5);
-	private static final Color STANDARD_BG = new Color(230, 240, 255);
+	private static final Color STANDARD_BG = new Color(230, 255, 240);
+	private static final Color CHECKING_BG = new Color(230, 240, 255);
 	private static final Color ERROR_BG = new Color(255, 240, 230);
 
 	public CustomTableCellRenderer(PathStorage storage) {
@@ -36,7 +37,10 @@ public class CustomTableCellRenderer extends DefaultTableCellRenderer {
 		table.setSelectionBackground(STANDARD_BG);
 		table.setSelectionForeground(Color.BLACK);
 
-		if (isMarkedRed) {
+		if (!entry.isAvailabilityChecked()) {
+			table.setSelectionBackground(CHECKING_BG);
+		}
+		else if (isMarkedRed) {
 			table.setSelectionBackground(ERROR_BG);
 		}
 		super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);

@@ -1,6 +1,9 @@
 package ch.judos.backupManager.model;
 
 import java.io.File;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import javax.swing.SwingUtilities;
 
 public class PathEntry {
 
@@ -8,12 +11,29 @@ public class PathEntry {
 	private File backupPath;
 	private String lastBackup;
 	private boolean selected;
+	private AtomicBoolean checking;
+	private boolean backupPathAvailable;
+	private boolean changePathAvailable;
+	private long lastAvailabilityCheck;
 
 	public PathEntry(File changePath, File backupPath, String lastBackup, boolean selected) {
 		this.changePath = changePath;
 		this.backupPath = backupPath;
 		this.lastBackup = lastBackup;
 		this.selected = selected;
+		this.checking = new AtomicBoolean(false);
+		SwingUtilities.invokeLater(this::checkFoldersAvailable);
+	}
+
+	private void checkFoldersAvailable() {
+		if (System.currentTimeMillis() - this.lastAvailabilityCheck < 1000)
+			return;
+		if (!this.checking.compareAndSet(false, true))
+			return;
+		this.changePathAvailable = this.changePath.exists();
+		this.backupPathAvailable = this.backupPath.exists();
+		this.lastAvailabilityCheck = System.currentTimeMillis();
+		this.checking.set(false);
 	}
 
 	public File getChangePath() {
@@ -47,10 +67,16 @@ public class PathEntry {
 	}
 
 	public boolean isChangePathMissing() {
-		return !this.changePath.exists();
+		SwingUtilities.invokeLater(this::checkFoldersAvailable);
+		return !this.changePathAvailable;
 	}
 
 	public boolean isBackupPathMissing() {
-		return !this.backupPath.exists();
+		SwingUtilities.invokeLater(this::checkFoldersAvailable);
+		return !this.backupPathAvailable;
+	}
+
+	public boolean isAvailabilityChecked() {
+		return this.lastAvailabilityCheck > 0;
 	}
 }
