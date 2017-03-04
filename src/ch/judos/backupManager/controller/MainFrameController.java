@@ -1,4 +1,6 @@
 package ch.judos.backupManager.controller;
+import javax.swing.Timer;
+
 import ch.judos.backupManager.model.PathEntry;
 import ch.judos.backupManager.model.PathStorage;
 import ch.judos.backupManager.view.AddPathFrame;
@@ -20,6 +22,10 @@ public class MainFrameController {
 		this.frame.addButton.addActionListener(event -> this.addDirectoryClicked());
 		this.frame.removeButton.addActionListener(event -> this.removeDirectories());
 		this.frame.startBackupButton.addActionListener(event -> this.startBackup());
+		// refresh table if directory becomes available or unavailable
+		new Timer(1000, event -> {
+			this.frame.table.updateUI();
+		}).start();
 	}
 
 	private void startBackup() {

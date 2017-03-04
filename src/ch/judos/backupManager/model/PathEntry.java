@@ -45,4 +45,12 @@ public class PathEntry {
 	public void setLastBackup(String string) {
 		this.lastBackup = string;
 	}
+
+	public boolean isChangePathMissing() {
+		return !this.changePath.exists();
+	}
+
+	public boolean isBackupPathMissing() {
+		return !this.backupPath.exists();
+	}
 }

@@ -1,5 +1,8 @@
 package ch.judos.backupManager.view;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -64,9 +67,6 @@ public class MainFrame extends JFrame {
 			ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		this.tableScrollPane.setVerticalScrollBarPolicy(
 			ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		this.table.setGridColor(Color.LIGHT_GRAY);
-		this.table.setSelectionBackground(new Color(230, 240, 255));
-		this.table.setSelectionForeground(Color.BLACK);
 		this.table.setFillsViewportHeight(true);
 		this.table.setDefaultRenderer(Object.class, new CustomTableCellRenderer(this.storage));
 		this.table.setDefaultRenderer(Boolean.class, new CustomBooleanTableCellRenderer(

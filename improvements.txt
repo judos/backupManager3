@@ -1,2 +1,2 @@
 - Possible late update:
-show paths as red if they are not available in the main window
+show progress during indexing large folders of data
