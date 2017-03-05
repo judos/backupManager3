@@ -2,7 +2,9 @@ package ch.judos.backupManager.model.operations;
 
 import java.io.File;
 import java.util.List;
+import java.util.function.Consumer;
 
+import ch.judos.backupManager.model.DataCounter;
 import ch.judos.generic.control.Text;
 import ch.judos.generic.exception.ExceptionWithKey;
 
@@ -37,7 +39,11 @@ public abstract class FileOperation {
 		this.currentState = State.TODO;
 		this.tag = operationTag;
 		this.relativePath = relativePath;
+		this.elementsToProcess = 0;
+		this.bytesToProcess = 0;
 	}
+
+	public abstract void calculateWork(DataCounter counter, Consumer<Runnable> newSubActions);
 
 	public FileOperation getDependsOn() {
 		return this.dependsOn;

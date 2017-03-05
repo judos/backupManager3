@@ -18,7 +18,7 @@ import ch.judos.generic.exception.ExceptionWithKey;
 import ch.judos.generic.files.FileSize;
 import ch.judos.generic.files.FileUtils;
 
-public class BackupData {
+public class BackupData implements DataCounter {
 
 	public Queue<FileOperation> taskList;
 	private int elementsToProcess;
@@ -47,8 +47,6 @@ public class BackupData {
 
 	public void add(FileOperation operation) {
 		this.taskList.add(operation);
-		this.elementsToProcess += operation.getElementsToProcess();
-		this.bytesToProcess += operation.getBytesToProcess();
 		this.backupLog.add(operation.getLogLine());
 	}
 
@@ -133,5 +131,15 @@ public class BackupData {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void addData(long bytes) {
+		this.bytesToProcess += bytes;
+	}
+
+	@Override
+	public void addElements(int files) {
+		this.elementsToProcess += files;
 	}
 }

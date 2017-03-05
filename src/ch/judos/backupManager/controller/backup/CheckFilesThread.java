@@ -1,7 +1,6 @@
 package ch.judos.backupManager.controller.backup;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -58,33 +57,18 @@ public class CheckFilesThread extends ProgressThread {
 	}
 
 	private void checkPath(PathEntry basePaths, String currentRelativePath) {
-		File folderChange = new File(basePaths.getChangePath(), currentRelativePath);
-		File folderBackup = new File(basePaths.getBackupPath(), currentRelativePath);
-		ArrayList<String> newRelativePathsToCheck = compareFolders(folderChange, folderBackup,
-			currentRelativePath);
-		for (String newRelativePathToCheck : newRelativePathsToCheck) {
-			addPathCheck(basePaths, newRelativePathToCheck);
-		}
+		compareFolders(basePaths, currentRelativePath);
 		this.checkedFolders++;
-		if (!this.shouldRun)
-			return;
 	}
 
-	private ArrayList<String> compareFolders(File folderChange, File folderBackup,
-		String basePath) {
-		ArrayList<String> newPathsToCheck = new ArrayList<String>();
+	private void compareFolders(PathEntry basePaths, String relativePath) {
+		File folderChange = new File(basePaths.getChangePath(), relativePath);
+		File folderBackup = new File(basePaths.getBackupPath(), relativePath);
 		String[] filesChange = folderChange.list();
-		if (filesChange == null) {
-			this.backupData.addError(new ExceptionWithKey("READ_ERROR",
-				"Path is not a folder: " + folderChange.getAbsolutePath()));
-			return newPathsToCheck;
-		}
 		String[] filesBackup = folderBackup.list();
-		if (filesBackup == null) {
-			this.backupData.addError(new ExceptionWithKey("READ_ERROR",
-				"Path is not a folder: " + folderBackup.getAbsolutePath()));
-			return newPathsToCheck;
-		}
+		if (!foldersValid(folderChange, folderBackup))
+			return;
+
 		HashSet<String> filesBackupSet = new HashSet<String>(Arrays.asList(filesBackup));
 		for (String file : filesChange) {
 			File changedFile = new File(folderChange, file);
@@ -93,33 +77,55 @@ public class CheckFilesThread extends ProgressThread {
 				filesBackupSet.remove(file);
 				if (changedFile.isFile() != backupFile.isFile()) {
 					RemoveOperation remove = new RemoveOperation(backupFile);
+					remove.calculateWork(this.backupData, this.tasks::add);
 					CopyOperation copy = new CopyOperation(changedFile, backupFile, Tag.NEW);
+					copy.calculateWork(this.backupData, this.tasks::add);
 					copy.dependsOn = remove;
 					this.backupData.add(remove);
 					this.backupData.add(copy);
 				}
 				else if (changedFile.isDirectory()) {
-					File subpath = new File(basePath, file);
-					newPathsToCheck.add(subpath.getPath());
+					File subpath = new File(relativePath, file);
+					addPathCheck(basePaths, subpath.getPath());
 				}
 				else if (changedFile.isFile()) {
-					compareFiles(changedFile, backupFile, basePath + "/" + file);
+					compareFiles(changedFile, backupFile, relativePath + "/" + file);
 				}
 			}
 			else {
-				this.backupData.add(new CopyOperation(changedFile, backupFile, Tag.NEW));
+				CopyOperation copy = new CopyOperation(changedFile, backupFile, Tag.NEW);
+				copy.calculateWork(this.backupData, this.tasks::add);
+				this.backupData.add(copy);
 			}
 		}
 		for (String file : filesBackupSet) {
-			this.backupData.add(new RemoveOperation(new File(folderBackup, file)));
+			RemoveOperation remove = new RemoveOperation(new File(folderBackup, file));
+			remove.calculateWork(this.backupData, this.tasks::add);
+			this.backupData.add(remove);
+
 		}
-		return newPathsToCheck;
+	}
+
+	private boolean foldersValid(File folderChange, File folderBackup) {
+		if (folderChange.list() == null) {
+			this.backupData.addError(new ExceptionWithKey("READ_ERROR",
+				"Path is not a folder: " + folderChange.getAbsolutePath()));
+			return false;
+		}
+		if (folderBackup.list() == null) {
+			this.backupData.addError(new ExceptionWithKey("READ_ERROR",
+				"Path is not a folder: " + folderBackup.getAbsolutePath()));
+			return false;
+		}
+		return true;
 	}
 
 	private void compareFiles(File changedFile, File backupFile, String relativePath) {
 		if (!fileWasModified(changedFile, backupFile))
 			return;
-		this.backupData.add(new CopyOperation(changedFile, backupFile, Tag.CHANGED));
+		CopyOperation copy = new CopyOperation(changedFile, backupFile, Tag.CHANGED);
+		copy.calculateWork(backupData, this.tasks::add);
+		this.backupData.add(copy);
 	}
 
 	private boolean fileWasModified(File changedFile, File backupFile) {

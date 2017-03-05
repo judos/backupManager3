@@ -3,7 +3,9 @@ package ch.judos.backupManager.model.operations;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
+import ch.judos.backupManager.model.DataCounter;
 import ch.judos.generic.exception.ExceptionWithKey;
 import ch.judos.generic.files.FileUtils;
 
@@ -17,26 +19,31 @@ public class CopyOperation extends FileOperation {
 		this.source = source;
 		this.target = target;
 		this.exceptionList = new ArrayList<>();
-		calculateWork();
 	}
 
-	private void calculateWork() {
-		calculateWorkFor(this.source);
+	@Override
+	public void calculateWork(DataCounter counter, Consumer<Runnable> newSubActions) {
+		calculateWork(counter, newSubActions, this.source);
 	}
 
-	private void calculateWorkFor(File file) {
+	private void calculateWork(DataCounter counter, Consumer<Runnable> newSubActions,
+		File toCheck) {
 		this.elementsToProcess++;
-		if (file.isFile()) {
-			this.bytesToProcess += file.length();
+		counter.addElements(1);
+		if (toCheck.isFile()) {
+			this.bytesToProcess += toCheck.length();
+			counter.addData(toCheck.length());
 			return;
 		}
-		if (file.listFiles() == null) {
+		if (toCheck.listFiles() == null) {
 			this.exceptionList.add(new ExceptionWithKey("NOT_A_FILE_OR_DIRECTORY",
-				"Path is not a file or directory: " + file.getAbsolutePath()));
+				"Path is not a file or directory: " + toCheck.getAbsolutePath()));
 			return;
 		}
-		for (File child : file.listFiles()) {
-			calculateWorkFor(child);
+		for (File child : toCheck.listFiles()) {
+			newSubActions.accept(() -> {
+				this.calculateWork(counter, newSubActions, child);
+			});
 		}
 	}
 
