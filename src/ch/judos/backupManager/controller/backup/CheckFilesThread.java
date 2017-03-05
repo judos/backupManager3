@@ -25,9 +25,9 @@ public class CheckFilesThread extends ProgressThread {
 	public CheckFilesThread(PathStorage storage, BackupData backupData) {
 		super("CheckFilesThread");
 		this.backupData = backupData;
-		addWorkFromStorage(storage);
 		this.checkedFolders = 0;
 		this.totalFolders = 0;
+		addWorkFromStorage(storage);
 	}
 
 	private void addWorkFromStorage(PathStorage storage) {
