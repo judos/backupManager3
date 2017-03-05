@@ -23,8 +23,8 @@ public class MainFrameController {
 		this.frame.removeButton.addActionListener(event -> this.removeDirectories());
 		this.frame.startBackupButton.addActionListener(event -> this.startBackup());
 		// refresh table if directory becomes available or unavailable
-		new Timer(1000, event -> {
-			this.frame.table.updateUI();
+		new Timer(2000, event -> {
+			this.frame.table.repaint();
 		}).start();
 	}
 

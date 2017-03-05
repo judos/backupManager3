@@ -3,8 +3,6 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -12,11 +10,9 @@ import javax.swing.*;
 
 import ch.judos.backupManager.Launcher;
 import ch.judos.backupManager.controller.util.JTableColumnResizer;
-import ch.judos.backupManager.model.PathEntry;
 import ch.judos.backupManager.model.PathStorage;
 import ch.judos.backupManager.model.Text;
-import ch.judos.backupManager.view.table.CustomBooleanTableCellRenderer;
-import ch.judos.backupManager.view.table.CustomTableCellRenderer;
+import ch.judos.backupManager.view.table.PathTable;
 import ch.judos.backupManager.view.table.PathTableModel;
 
 public class MainFrame extends JFrame {
@@ -56,34 +52,17 @@ public class MainFrame extends JFrame {
 		c.gridy = 0;
 		c.insets = new Insets(5, 5, 5, 5);
 		c.fill = GridBagConstraints.BOTH;
-		this.table = new JTable();
+		this.table = new PathTable(this.storage);
 		this.tableModel = new PathTableModel(this.storage, this.table);
 		this.table.setModel(this.tableModel);
 		this.tableScrollPane = new JScrollPane();
 		this.tableScrollPane.setViewportView(table);
 		this.add(this.tableScrollPane, c);
-		this.table.setRowHeight(30);
 		this.tableScrollPane.setHorizontalScrollBarPolicy(
 			ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		this.tableScrollPane.setVerticalScrollBarPolicy(
 			ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		this.table.setFillsViewportHeight(true);
-		this.table.setDefaultRenderer(Object.class, new CustomTableCellRenderer(this.storage));
-		this.table.setDefaultRenderer(Boolean.class, new CustomBooleanTableCellRenderer(
-			this.storage));
-		this.table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		this.table.addMouseListener(new MouseAdapter() {
 
-			public void mousePressed(MouseEvent e) {
-				int rowIndex = table.rowAtPoint(e.getPoint());
-				if (rowIndex > -1) {
-					PathEntry entry = storage.getPathEntry(rowIndex);
-					entry.setSelected(!entry.isSelected());
-					SwingUtilities.invokeLater(table::updateUI);
-				}
-			}
-
-		});
 		resizeColumnWidths();
 
 		c.gridy = 1;
