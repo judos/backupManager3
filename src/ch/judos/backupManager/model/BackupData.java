@@ -9,6 +9,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import ch.judos.backupManager.model.operations.FileOperation;
+import ch.judos.generic.control.Text;
 import ch.judos.generic.data.DynamicList;
 import ch.judos.generic.data.StringUtils;
 import ch.judos.generic.data.date.DateTime;

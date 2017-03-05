@@ -6,7 +6,7 @@ import java.util.function.BiConsumer;
 
 import javax.swing.*;
 
-import ch.judos.backupManager.model.Text;
+import ch.judos.generic.control.Text;
 import ch.judos.generic.files.FileUtils;
 
 public class AddPathFrame extends JDialog {

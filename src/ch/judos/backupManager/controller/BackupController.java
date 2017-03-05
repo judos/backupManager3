@@ -12,16 +12,16 @@ import ch.judos.backupManager.controller.backup.ProgressTrackable;
 import ch.judos.backupManager.model.BackupData;
 import ch.judos.backupManager.model.BackupOptions;
 import ch.judos.backupManager.model.PathEntry;
-import ch.judos.backupManager.model.Text;
 import ch.judos.backupManager.view.BackupProgressFrame;
 import ch.judos.backupManager.view.MainFrame;
-import ch.judos.backupManager.view.TaskBarProgressWrapper;
-import ch.judos.backupManager.view.TaskBarProgressWrapper.State;
+import ch.judos.generic.control.Text;
 import ch.judos.generic.data.date.Date;
 import ch.judos.generic.data.date.Time;
 import ch.judos.generic.exception.RunnableThrowsException;
 import ch.judos.generic.files.FileUtils;
 import ch.judos.generic.gui.Notification;
+import ch.judos.generic.os.TaskBarProgressWrapper;
+import ch.judos.generic.os.TaskBarProgressWrapper.State;
 
 public class BackupController {
 

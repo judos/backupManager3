@@ -3,7 +3,7 @@ package ch.judos.backupManager.model.operations;
 import java.io.File;
 import java.util.List;
 
-import ch.judos.backupManager.model.Text;
+import ch.judos.generic.control.Text;
 import ch.judos.generic.exception.ExceptionWithKey;
 
 public abstract class FileOperation {

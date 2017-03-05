@@ -9,11 +9,11 @@ import java.awt.event.WindowEvent;
 import javax.swing.*;
 
 import ch.judos.backupManager.Launcher;
-import ch.judos.backupManager.controller.util.JTableColumnResizer;
 import ch.judos.backupManager.model.PathStorage;
-import ch.judos.backupManager.model.Text;
 import ch.judos.backupManager.view.table.PathTable;
 import ch.judos.backupManager.view.table.PathTableModel;
+import ch.judos.generic.control.Text;
+import ch.judos.generic.swing.jtable.JTableColumnResizer;
 
 public class MainFrame extends JFrame {
 
