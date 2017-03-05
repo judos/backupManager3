@@ -8,13 +8,13 @@ import javax.swing.Timer;
 
 import ch.judos.backupManager.controller.backup.BackupFilesThread;
 import ch.judos.backupManager.controller.backup.CheckFilesThread;
-import ch.judos.backupManager.controller.backup.ProgressTrackable;
 import ch.judos.backupManager.model.BackupData;
 import ch.judos.backupManager.model.BackupOptions;
 import ch.judos.backupManager.model.PathEntry;
 import ch.judos.backupManager.view.BackupProgressFrame;
 import ch.judos.backupManager.view.MainFrame;
 import ch.judos.generic.control.Text;
+import ch.judos.generic.control.concurrency.ProgressTrackable;
 import ch.judos.generic.data.date.Date;
 import ch.judos.generic.data.date.Time;
 import ch.judos.generic.exception.RunnableThrowsException;

@@ -12,65 +12,62 @@ import ch.judos.backupManager.model.operations.CopyOperation;
 import ch.judos.backupManager.model.operations.FileOperation.Tag;
 import ch.judos.backupManager.model.operations.RemoveOperation;
 import ch.judos.generic.control.Text;
-import ch.judos.generic.data.DynamicList;
-import ch.judos.generic.data.TupleR;
+import ch.judos.generic.control.concurrency.ProgressThread;
 import ch.judos.generic.exception.ExceptionWithKey;
 
-public class CheckFilesThread extends Thread implements ProgressTrackable {
+public class CheckFilesThread extends ProgressThread {
 
 	private BackupData backupData;
-	private DynamicList<TupleR<PathEntry, String>> pathsToCheck;
 	private int checkedFolders;
 	public Runnable onFinished;
-	public boolean shouldRun;
+	private int totalFolders;
 
 	public CheckFilesThread(PathStorage storage, BackupData backupData) {
+		super("CheckFilesThread");
 		this.backupData = backupData;
-		this.pathsToCheck = new DynamicList<TupleR<PathEntry, String>>();
 		addWorkFromStorage(storage);
 		this.checkedFolders = 0;
-		this.shouldRun = true;
-		setName("CheckFilesThread");
+		this.totalFolders = 0;
 	}
 
 	private void addWorkFromStorage(PathStorage storage) {
 		for (int i = 0; i < storage.getSize(); i++) {
 			PathEntry entry = storage.getPathEntry(i);
 			if (entry.isSelected()) {
-				pathsToCheck.add(new TupleR<>(entry, ""));
+				addPathCheck(entry, "");
 			}
 		}
 	}
 
-	public double getProgress() {
-		int total = this.checkedFolders + this.pathsToCheck.size();
-		return (double) this.checkedFolders / total;
+	private void addPathCheck(PathEntry entry, String relativePath) {
+		this.totalFolders++;
+		this.tasks.add(() -> {
+			this.checkPath(entry, relativePath);
+		});
 	}
 
 	public String getProgressText() {
-		int total = this.checkedFolders + this.pathsToCheck.size();
-		return Text.get("checking_folders", this.checkedFolders, total);
+		return Text.get("checking_folders", this.checkedFolders, this.totalFolders);
 	}
 
 	public void run() {
-		while (this.pathsToCheck.size() > 0) {
-			TupleR<PathEntry, String> checkEntry = this.pathsToCheck.remove(0);
-			PathEntry basePaths = checkEntry.e0;
-			String currentRelativePath = checkEntry.e1;
-			File folderChange = new File(basePaths.getChangePath(), currentRelativePath);
-			File folderBackup = new File(basePaths.getBackupPath(), currentRelativePath);
-			ArrayList<String> newRelativePathsToCheck = compareFolders(folderChange,
-				folderBackup, currentRelativePath);
-			for (String newRelativePathToCheck : newRelativePathsToCheck) {
-				this.pathsToCheck.add(new TupleR<>(basePaths, newRelativePathToCheck));
-			}
-			this.checkedFolders++;
-			if (!this.shouldRun)
-				return;
-		}
+		super.run();
 		if (this.onFinished != null) {
 			this.onFinished.run();
 		}
+	}
+
+	private void checkPath(PathEntry basePaths, String currentRelativePath) {
+		File folderChange = new File(basePaths.getChangePath(), currentRelativePath);
+		File folderBackup = new File(basePaths.getBackupPath(), currentRelativePath);
+		ArrayList<String> newRelativePathsToCheck = compareFolders(folderChange, folderBackup,
+			currentRelativePath);
+		for (String newRelativePathToCheck : newRelativePathsToCheck) {
+			addPathCheck(basePaths, newRelativePathToCheck);
+		}
+		this.checkedFolders++;
+		if (!this.shouldRun)
+			return;
 	}
 
 	private ArrayList<String> compareFolders(File folderChange, File folderBackup,
