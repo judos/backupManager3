@@ -86,7 +86,7 @@ public class BackupController {
 			return;
 
 		this.updateUiThread.stop();
-		this.checkThread.shouldRun = false;
+		this.checkThread.setShouldRun(false);
 		if (this.backupThread != null)
 			this.backupThread.shouldRun = false;
 		this.backupFrame.dispose();

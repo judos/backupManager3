@@ -129,4 +129,8 @@ public class CheckFilesThread extends ProgressThread {
 			return true;
 		return false;
 	}
+
+	public void setShouldRun(boolean shouldRun) {
+		this.shouldRun = shouldRun;
+	}
 }
