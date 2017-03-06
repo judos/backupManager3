@@ -1,2 +1,12 @@
 - Possible late update:
-show progress during indexing large folders of data
+show progress during executing large operations on data
+change architecture of file operation to:
+	- fileoperation:traverseTree(Consumer<File> file)
+	- fileoperation abstract calculateWorkOf(File f)
+	- fileoperation abstract executeOperationOn(File f)
+to allow global async execution
+
+show remaining time estimate
+	store constant time for checking backup paths
+	store measurement (elements+data -> time)
+		model: elements * c1 + data * c2 = time
