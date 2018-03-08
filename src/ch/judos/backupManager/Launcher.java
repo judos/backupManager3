@@ -20,7 +20,7 @@ public class Launcher {
 	}
 
 	private static void setupGlobalExceptionHandler() {
-		Thread.setDefaultUncaughtExceptionHandler(new GlobalExceptionHandler());
+		Thread.setDefaultUncaughtExceptionHandler(GlobalExceptionHandler.getInstance());
 	}
 
 	private void startApp() throws Exception {

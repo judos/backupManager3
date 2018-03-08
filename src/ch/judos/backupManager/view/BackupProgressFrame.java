@@ -132,7 +132,7 @@ public class BackupProgressFrame extends JDialog {
 		this.openLogButton = new JButton(Text.get("open_log"), Images.read());
 		this.add(this.openLogButton, c);
 		this.openLogButton.addActionListener(event -> openLogFile
-			.runWithoutRuntimeException());
+			.runWithoutCompilerException());
 		this.rootPane.updateUI();
 	}
 
