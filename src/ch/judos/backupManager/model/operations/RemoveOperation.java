@@ -33,6 +33,8 @@ public class RemoveOperation extends FileOperation {
 			return;
 		}
 		if (toCheck.isDirectory()) {
+			if (toCheck.listFiles()==null)
+				return;
 			for (File f : toCheck.listFiles()) {
 				if (f.isDirectory()) {
 					subActions.accept(() -> {
