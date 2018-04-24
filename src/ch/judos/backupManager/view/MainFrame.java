@@ -30,7 +30,7 @@ public class MainFrame extends JFrame {
 		this.storage = storage;
 		setLookAndFeel();
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		setTitle("BackupManager " + Launcher.VERSION + " - judos 2017");
+		setTitle("BackupManager " + Launcher.VERSION + " - judos 2018");
 		setIconImage(Images.backupImage());
 		addComponents();
 
