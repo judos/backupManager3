@@ -14,6 +14,7 @@
             </manifest>
             <fileset dir="${dir.buildfile}/bin"/>
             <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/libs/bridj-0.7.0.jar"/>
+        	<zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/libs/WaDosUtil-1.4.7.jar"/>
         </jar>
     </target>
 </project>
