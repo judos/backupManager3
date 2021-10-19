@@ -4,3 +4,5 @@ Logs/
 bin/
 
 backupPaths.csv
+.idea
+*.iml
