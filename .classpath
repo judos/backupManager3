@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="libs/bridj-0.7.0.jar"/>
-	<classpathentry kind="lib" path="libs/WaDosUtil-1.4.7-all.jar"/>
-	<classpathentry kind="lib" path="libs/commons-lang3-3.7.jar"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>
