@@ -6,3 +6,4 @@ bin/
 backupPaths.csv
 .idea
 *.iml
+target
