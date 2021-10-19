@@ -12,7 +12,7 @@ import ch.judos.backupManager.Launcher;
 import ch.judos.backupManager.model.PathStorage;
 import ch.judos.backupManager.view.table.PathTable;
 import ch.judos.backupManager.view.table.PathTableModel;
-import ch.judos.generic.control.Text;
+import ch.judos.generic.Text;
 import ch.judos.generic.swing.jtable.JTableColumnResizer;
 
 public class MainFrame extends JFrame {
@@ -30,7 +30,7 @@ public class MainFrame extends JFrame {
 		this.storage = storage;
 		setLookAndFeel();
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		setTitle("BackupManager " + Launcher.VERSION + " - judos 2018");
+		setTitle("BackupManager " + Launcher.VERSION + " - judos 2021");
 		setIconImage(Images.backupImage());
 		addComponents();
 

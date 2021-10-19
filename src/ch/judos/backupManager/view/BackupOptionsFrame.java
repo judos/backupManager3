@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 import javax.swing.*;
 
 import ch.judos.backupManager.model.BackupOptions;
-import ch.judos.generic.control.Text;
+import ch.judos.generic.Text;
 
 public class BackupOptionsFrame extends JDialog {
 

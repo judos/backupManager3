@@ -4,7 +4,7 @@ import java.util.List;
 
 import ch.judos.backupManager.model.BackupData;
 import ch.judos.backupManager.model.operations.FileOperation;
-import ch.judos.generic.control.Text;
+import ch.judos.generic.Text;
 import ch.judos.generic.control.concurrency.ProgressTrackable;
 import ch.judos.generic.exception.ExceptionWithKey;
 import ch.judos.generic.files.FileSize;

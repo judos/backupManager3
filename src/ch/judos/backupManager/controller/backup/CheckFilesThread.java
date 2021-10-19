@@ -10,7 +10,7 @@ import ch.judos.backupManager.model.PathStorage;
 import ch.judos.backupManager.model.operations.CopyOperation;
 import ch.judos.backupManager.model.operations.FileOperation.Tag;
 import ch.judos.backupManager.model.operations.RemoveOperation;
-import ch.judos.generic.control.Text;
+import ch.judos.generic.Text;
 import ch.judos.generic.control.concurrency.ProgressThread;
 import ch.judos.generic.exception.ExceptionWithKey;
 

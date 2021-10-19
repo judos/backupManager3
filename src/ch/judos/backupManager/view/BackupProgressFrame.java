@@ -10,7 +10,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.*;
 
 import ch.judos.backupManager.model.BackupOptions;
-import ch.judos.generic.control.Text;
+import ch.judos.generic.Text;
 import ch.judos.generic.exception.RunnableThrowsException;
 
 public class BackupProgressFrame extends JDialog {

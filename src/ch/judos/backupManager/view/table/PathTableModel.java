@@ -5,7 +5,7 @@ import javax.swing.table.TableModel;
 
 import ch.judos.backupManager.model.PathEntry;
 import ch.judos.backupManager.model.PathStorage;
-import ch.judos.generic.control.Text;
+import ch.judos.generic.Text;
 
 public class PathTableModel implements TableModel {
 

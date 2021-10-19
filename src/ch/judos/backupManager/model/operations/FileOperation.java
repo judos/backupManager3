@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import ch.judos.backupManager.model.DataCounter;
-import ch.judos.generic.control.Text;
+import ch.judos.generic.Text;
 import ch.judos.generic.exception.ExceptionWithKey;
 
 public abstract class FileOperation {
